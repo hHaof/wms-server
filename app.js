@@ -20,6 +20,7 @@ app.use(cors({
     'https://splendid-zuccutto-2d6909.netlify.app',
     'https://magical-otter-3b6b8f.netlify.app',
     'https://allfastllc.xyz',
+    'https://www.allfastllc.xyz',
   ],
   credentials: true,
 }));
