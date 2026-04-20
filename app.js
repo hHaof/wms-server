@@ -16,7 +16,11 @@ app.set('trust proxy', 1);
 app.use(helmet());
 
 app.use(cors({
-  origin: 'https://splendid-zuccutto-2d6909.netlify.app',
+  origin: [
+    'https://splendid-zuccutto-2d6909.netlify.app',
+    'https://magical-otter-3b6b8f.netlify.app',
+    'https://allfastllc.xyz',
+  ],
   credentials: true,
 }));
 
