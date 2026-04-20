@@ -21,6 +21,8 @@ app.use(cors({
     'https://magical-otter-3b6b8f.netlify.app',
     'https://allfastllc.xyz',
     'https://www.allfastllc.xyz',
+    'http://allfastllc.xyz',
+    'http://www.allfastllc.xyz',
   ],
   credentials: true,
 }));
