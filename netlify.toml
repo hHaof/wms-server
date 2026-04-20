@@ -4,9 +4,11 @@
   # No build step needed — plain HTML/CSS/JS
 
 [[redirects]]
-  # Proxy all /api/* calls to the backend instead of sending them cross-origin.
-  # This avoids CORS issues and keeps cookies on the same Netlify domain.
-  # Replace YOUR_BACKEND_URL with your Railway or Render service URL.
+  from = "/"
+  to = "/login.html"
+  status = 302
+
+[[redirects]]
   from   = "/api/*"
   to     = "https://YOUR_BACKEND_URL/api/:splat"
   status = 200
