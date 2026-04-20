@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đóng gói — WMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* Auto-refresh indicator */
+    .refresh-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+      display: inline-block; margin-right: 6px; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: .3; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><h1>📦 WMS</h1><span>Quản lý kho hàng</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Menu</div>
+      <a class="nav-link" href="/dashboard.html"><span class="nav-icon">🏠</span> Tổng quan</a>
+      <a class="nav-link" href="/inventory.html"><span class="nav-icon">📦</span> Kho hàng</a>
+      <a class="nav-link" href="/orders.html"><span class="nav-icon">📋</span> Đơn hàng</a>
+      <a class="nav-link" href="/packing.html"><span class="nav-icon">🔖</span> Đóng gói</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="logout()">
+        <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Đóng gói</div>
+      <div class="topbar-user">
+        <span style="font-size:13px;color:var(--text-muted)">
+          <span class="refresh-dot"></span>Tự động làm mới
+        </span>
+        <div class="user-avatar" id="user-avatar">?</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Hàng đợi đóng gói</div>
+          <div class="page-subtitle">Nhận đơn → Đóng gói → Bàn giao vận chuyển</div>
+        </div>
+        <div class="gap-row">
+          <!-- Filter tabs -->
+          <div id="filter-tabs" class="gap-row">
+            <button class="btn btn-primary btn-sm active-tab" onclick="setFilter('all', this)">Tất cả</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('pending', this)">⏳ Chờ</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('packed', this)">📫 Đã gói</button>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="loadQueue()">↻ Làm mới</button>
+        </div>
+      </div>
+
+      <!-- Summary bar -->
+      <div class="gap-row" style="margin-bottom:16px" id="summary-bar">
+        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Chờ đóng gói</div>
+          <div style="font-size:22px;font-weight:700;color:var(--warning)" id="count-pending">—</div>
+        </div>
+        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Của tôi</div>
+          <div style="font-size:22px;font-weight:700;color:var(--primary)" id="count-mine">—</div>
+        </div>
+        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Đã gói xong</div>
+          <div style="font-size:22px;font-weight:700;color:var(--success)" id="count-packed">—</div>
+        </div>
+      </div>
+
+      <div id="queue-container">
+        <div class="loading"><div class="spinner"></div> Đang tải hàng đợi...</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Checklist before marking packed -->
+<div class="modal" id="modal-pack">
+  <div class="modal-box" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">✅ Xác nhận đóng gói</div>
+      <button class="modal-close" onclick="closeModal('modal-pack')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:12px">Đơn: <strong id="pack-order-num"></strong></p>
+      <div id="pack-checklist" style="margin-bottom:16px"></div>
+      <div class="form-group">
+        <label class="form-label">Ghi chú (tùy chọn)</label>
+        <input class="form-control" id="pack-note" placeholder="Ghi chú khi đóng gói..." />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-pack')">Hủy</button>
+      <button type="button" class="btn btn-success" id="btn-confirm-pack" onclick="confirmPack()">
+        ✅ Xác nhận đã đóng gói
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  markActiveNav();
+  renderUser();
+
+  const currentUser = getUser();
+  if (currentUser) document.getElementById('user-avatar').textContent = currentUser.name[0].toUpperCase();
+
+  const h = escapeHtml;
+  let allOrders = [];
+  let activeFilter = 'all';
+  let packingOrderId = null;
+  // Keyed by order._id — lets onclick pass only the ID instead of embedding
+  // raw JSON (which was an XSS vector via product names in the attribute string)
+  const orderCache = new Map();
+
+  function setFilter(filter, btn) {
+    activeFilter = filter;
+    document.querySelectorAll('#filter-tabs .btn').forEach(b => {
+      b.className = b === btn ? 'btn btn-primary btn-sm' : 'btn btn-secondary btn-sm';
+    });
+    renderQueue();
+  }
+
+  async function loadQueue() {
+    try {
+      const { orders } = await Orders.packingQueue();
+      allOrders = orders;
+      orders.forEach(o => orderCache.set(o._id, o));
+      updateSummary();
+      renderQueue();
+    } catch (err) {
+      document.getElementById('queue-container').innerHTML =
+        `<div class="empty"><div class="empty-icon">⚠️</div><p class="text-danger">${err.message}</p></div>`;
+    }
+  }
+
+  function updateSummary() {
+    const pending = allOrders.filter(o => o.status === 'pending').length;
+    const mine    = allOrders.filter(o => o.assignedPacker?._id === currentUser?._id).length;
+    const packed  = allOrders.filter(o => o.status === 'packed').length;
+    document.getElementById('count-pending').textContent = pending;
+    document.getElementById('count-mine').textContent    = mine;
+    document.getElementById('count-packed').textContent  = packed;
+  }
+
+  function renderQueue() {
+    let orders = allOrders;
+    if (activeFilter === 'pending') orders = orders.filter(o => o.status === 'pending');
+    if (activeFilter === 'packed')  orders = orders.filter(o => o.status === 'packed');
+
+    const container = document.getElementById('queue-container');
+    if (!orders.length) {
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🎉</div>
+          <p>${activeFilter === 'all' ? 'Không có đơn hàng nào trong hàng đợi' : 'Không có đơn ở trạng thái này'}</p>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = `<div class="packing-grid">${orders.map(renderCard).join('')}</div>`;
+  }
+
+  function renderCard(o) {
+    const isAssignedToMe = o.assignedPacker && currentUser && o.assignedPacker._id === currentUser._id;
+    const isUnassigned   = !o.assignedPacker;
+    const isClaimed      = o.assignedPacker && !isAssignedToMe;
+
+    const itemsList = o.items.map(i =>
+      `<div class="order-item-row">
+        <span>${h(i.name)}</span>
+        <span class="fw-600">x${i.quantity} ${h(i.unit || '')}</span>
+      </div>`
+    ).join('');
+
+    let actions = '';
+    if (o.status === 'pending') {
+      if (isUnassigned) {
+        actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>`;
+      } else if (isAssignedToMe) {
+        // Pass only the ID — data is retrieved from orderCache to avoid XSS via product names in onclick
+        actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>`;
+      } else {
+        actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>`;
+      }
+    } else if (o.status === 'packed') {
+      actions = `<span class="badge badge-blue">Chờ vận chuyển</span>`;
+    }
+
+    return `
+      <div class="order-card ${o.status}">
+        <div class="order-card-header">
+          <div>
+            <div class="order-num">${h(o.orderNumber)}</div>
+            <div class="order-customer">${h(o.customer?.name)} · ${h(o.customer?.phone)}</div>
+          </div>
+          ${statusBadge(o.status)}
+        </div>
+
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">
+          📍 ${h(o.customer?.address)}
+        </div>
+
+        <div class="order-items">${itemsList}</div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:8px">
+          <span class="text-muted">${formatDate(o.createdAt)}</span>
+          <span class="fw-600">${formatCurrency(o.totalAmount)}</span>
+        </div>
+
+        ${isAssignedToMe || isUnassigned ? `
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">
+            ${isAssignedToMe ? '👤 Đơn của tôi' : ''}
+            ${isUnassigned && o.status === 'pending' ? '🔓 Chưa ai nhận' : ''}
+          </div>` : ''}
+
+        <div class="order-card-footer">${actions}</div>
+      </div>
+    `;
+  }
+
+  async function claimOrder(id) {
+    try {
+      await Orders.claim(id);
+      toast('Đã nhận đơn hàng');
+      loadQueue();
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  }
+
+  function openPackModal(id) {
+    const o = orderCache.get(id);
+    if (!o) return;
+    packingOrderId = id;
+    document.getElementById('pack-order-num').textContent = o.orderNumber; // textContent = safe
+    document.getElementById('pack-note').value = '';
+
+    // Checklist lets packer verify each item before confirming
+    document.getElementById('pack-checklist').innerHTML = o.items.map((item, i) => `
+      <label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);
+        border-radius:6px;margin-bottom:6px;cursor:pointer">
+        <input type="checkbox" id="check-${i}" style="width:16px;height:16px" />
+        <span><strong>${h(item.name)}</strong> — x${item.quantity} ${h(item.unit || '')}</span>
+      </label>
+    `).join('');
+
+    showModal('modal-pack');
+  }
+
+  async function confirmPack() {
+    // Verify all checklist items are ticked
+    const checks = document.querySelectorAll('#pack-checklist input[type="checkbox"]');
+    const allChecked = [...checks].every(c => c.checked);
+    if (!allChecked) {
+      toast('Vui lòng kiểm tra tất cả sản phẩm trước khi xác nhận', 'error');
+      return;
+    }
+
+    const note = document.getElementById('pack-note').value.trim();
+    const btn  = document.getElementById('btn-confirm-pack');
+    btn.disabled = true; btn.textContent = 'Đang lưu...';
+
+    try {
+      await Orders.updateStatus(packingOrderId, 'packed', note);
+      toast('Đơn hàng đã được đánh dấu đóng gói xong');
+      closeModal('modal-pack');
+      loadQueue();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = '✅ Xác nhận đã đóng gói';
+    }
+  }
+
+  // Auto-refresh every 30 seconds to pick up new orders
+  loadQueue();
+  setInterval(loadQueue, 30_000);
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập — WMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <h1>📦 WMS</h1>
+      <p>Hệ thống quản lý kho hàng</p>
+    </div>
+
+    <div class="login-error" id="login-error"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="email" id="email" placeholder="admin@example.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Mật khẩu</label>
+        <input class="form-control" type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary login-btn" type="submit" id="submit-btn">Đăng nhập</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+  // Already logged in → skip login page
+  if (getToken()) window.location.href = '/dashboard.html';
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const errEl = document.getElementById('login-error');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    btn.disabled = true;
+    btn.textContent = 'Đang đăng nhập...';
+    errEl.style.display = 'none';
+
+    try {
+      await Auth.login(email, password);
+      window.location.href = '/dashboard.html';
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Đăng nhập';
+    }
+  });
+</script>
+</body>
+</html>

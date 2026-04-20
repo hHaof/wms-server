@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: wms-server
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false          # paste MongoDB Atlas URI in Render dashboard
+      - key: JWT_ACCESS_SECRET
+        generateValue: true  # Render auto-generates a secure random value
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false          # paste your Netlify URL, e.g. https://wms-app.netlify.app

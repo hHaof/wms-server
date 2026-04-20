@@ -1,0 +1,27 @@
+<!-- Shared sidebar snippet — copy into each protected page -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>📦 WMS</h1>
+    <span>Quản lý kho hàng</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Menu</div>
+    <a class="nav-link" href="/dashboard.html">
+      <span class="nav-icon">🏠</span> Tổng quan
+    </a>
+    <a class="nav-link" href="/inventory.html">
+      <span class="nav-icon">📦</span> Kho hàng
+    </a>
+    <a class="nav-link" href="/orders.html">
+      <span class="nav-icon">📋</span> Đơn hàng
+    </a>
+    <a class="nav-link" href="/packing.html">
+      <span class="nav-icon">🔖</span> Đóng gói
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()">
+      <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
+    </button>
+  </div>
+</aside>

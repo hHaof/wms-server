@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đơn hàng — WMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><h1>📦 WMS</h1><span>Quản lý kho hàng</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Menu</div>
+      <a class="nav-link" href="/dashboard.html"><span class="nav-icon">🏠</span> Tổng quan</a>
+      <a class="nav-link" href="/inventory.html"><span class="nav-icon">📦</span> Kho hàng</a>
+      <a class="nav-link" href="/orders.html"><span class="nav-icon">📋</span> Đơn hàng</a>
+      <a class="nav-link" href="/packing.html"><span class="nav-icon">🔖</span> Đóng gói</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="logout()">
+        <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Đơn hàng</div>
+      <div class="topbar-user"><div class="user-avatar" id="user-avatar">?</div></div>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Danh sách đơn hàng</div>
+          <div class="page-subtitle">Quản lý và theo dõi trạng thái đơn hàng</div>
+        </div>
+        <button class="btn btn-primary" onclick="showModal('modal-create')">+ Tạo đơn</button>
+      </div>
+
+      <div class="card">
+        <div class="toolbar">
+          <input class="form-control toolbar-search" id="search-input" placeholder="Tìm mã đơn hàng..." />
+          <select class="form-control" id="status-filter" style="width:160px" onchange="loadOrders(1)">
+            <option value="">Tất cả trạng thái</option>
+            <option value="pending">Chờ đóng gói</option>
+            <option value="packed">Đã đóng gói</option>
+            <option value="shipped">Đã giao</option>
+          </select>
+          <button class="btn btn-secondary" onclick="loadOrders(1)">🔍 Lọc</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã đơn</th>
+                <th>Khách hàng</th>
+                <th>Sản phẩm</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th class="text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="order-table">
+              <tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Create order -->
+<div class="modal" id="modal-create">
+  <div class="modal-box" style="max-width:580px">
+    <div class="modal-header">
+      <div class="modal-title">Tạo đơn hàng mới</div>
+      <button class="modal-close" onclick="closeModal('modal-create')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="fw-600" style="margin-bottom:10px">Thông tin khách hàng</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tên khách hàng *</label>
+          <input class="form-control" id="c-name" required placeholder="Nguyễn Văn A" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Số điện thoại *</label>
+          <input class="form-control" id="c-phone" required placeholder="0901234567" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Địa chỉ giao hàng *</label>
+        <input class="form-control" id="c-address" required placeholder="123 Đường ABC, Quận 1, TP.HCM" />
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+        <p class="fw-600">Sản phẩm</p>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()">+ Thêm dòng</button>
+      </div>
+      <div id="items-container"></div>
+
+      <div class="form-group" style="margin-top:12px">
+        <label class="form-label">Ghi chú</label>
+        <textarea class="form-control" id="order-note" rows="2" placeholder="Ghi chú thêm..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-create')">Hủy</button>
+      <button type="button" class="btn btn-primary" id="btn-create" onclick="submitCreate()">Tạo đơn hàng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Update status -->
+<div class="modal" id="modal-status">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title">Cập nhật trạng thái</div>
+      <button class="modal-close" onclick="closeModal('modal-status')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:12px">Đơn hàng: <strong id="status-order-num"></strong></p>
+      <div class="form-group">
+        <label class="form-label">Trạng thái mới</label>
+        <select class="form-control" id="new-status">
+          <option value="packed">Đã đóng gói</option>
+          <option value="shipped">Đã giao</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ghi chú (tùy chọn)</label>
+        <input class="form-control" id="status-note" placeholder="Ghi chú..." />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-status')">Hủy</button>
+      <button type="button" class="btn btn-primary" onclick="submitStatus()">Cập nhật</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Order detail -->
+<div class="modal" id="modal-detail">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-header">
+      <div class="modal-title" id="detail-title">Chi tiết đơn hàng</div>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-body">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  markActiveNav();
+  renderUser();
+
+  const user = getUser();
+  if (user) document.getElementById('user-avatar').textContent = user.name[0].toUpperCase();
+
+  const h = escapeHtml;
+  let currentPage = 1;
+  let selectedOrderId = null;
+  let allProducts = [];
+  const orderCache = new Map();
+
+  async function loadProducts() {
+    try {
+      const data = await Products.list({ limit: 200 });
+      allProducts = data.products || [];
+    } catch (_) {}
+  }
+
+  async function loadOrders(page = 1) {
+    currentPage = page;
+    const search = document.getElementById('search-input').value.trim();
+    const status = document.getElementById('status-filter').value;
+
+    document.getElementById('order-table').innerHTML =
+      `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>`;
+
+    try {
+      const params = { page, limit: 15 };
+      if (search) params.search = search;
+      if (status) params.status = status;
+
+      const data = await Orders.list(params);
+      renderTable(data.orders);
+      renderPagination(data.pagination);
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  }
+
+  function renderTable(orders) {
+    const tbody = document.getElementById('order-table');
+    if (!orders.length) {
+      tbody.innerHTML = `<tr><td colspan="7">
+        <div class="empty"><div class="empty-icon">📋</div><p>Không có đơn hàng nào</p></div>
+      </td></tr>`;
+      return;
+    }
+    orders.forEach(o => orderCache.set(o._id, o));
+    tbody.innerHTML = orders.map(o => `
+      <tr>
+        <td class="fw-600">${h(o.orderNumber)}</td>
+        <td>
+          <div>${h(o.customer.name)}</div>
+          <div class="text-muted" style="font-size:12px">${h(o.customer.phone)}</div>
+        </td>
+        <td class="text-muted" style="font-size:13px">${o.items.length} sản phẩm</td>
+        <td class="fw-600">${formatCurrency(o.totalAmount)}</td>
+        <td>${statusBadge(o.status)}</td>
+        <td class="text-muted">${formatDate(o.createdAt)}</td>
+        <td class="text-right">
+          <div class="gap-row" style="justify-content:flex-end">
+            <button class="btn btn-secondary btn-xs" onclick="viewDetail('${o._id}')">Chi tiết</button>
+            ${o.status !== 'shipped'
+              ? `<button class="btn btn-primary btn-xs" onclick="openStatusModal('${o._id}')">Cập nhật</button>`
+              : ''}
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function renderPagination({ totalPages, page }) {
+    const el = document.getElementById('pagination');
+    if (totalPages <= 1) { el.innerHTML = ''; return; }
+    let html = `<button class="page-btn" onclick="loadOrders(${page-1})" ${page===1?'disabled':''}>‹</button>`;
+    for (let i = 1; i <= totalPages; i++)
+      html += `<button class="page-btn ${i===page?'active':''}" onclick="loadOrders(${i})">${i}</button>`;
+    html += `<button class="page-btn" onclick="loadOrders(${page+1})" ${page===totalPages?'disabled':''}>›</button>`;
+    el.innerHTML = html;
+  }
+
+  // ─── Create order ─────────────────────────────────────────────────────────────
+
+  let itemRows = [];
+
+  function addItemRow() {
+    const id = Date.now();
+    itemRows.push(id);
+    const options = allProducts.map(p =>
+      `<option value="${p._id}">${p.name} (${p.sku}) — tồn: ${p.stock}</option>`
+    ).join('');
+
+    const el = document.createElement('div');
+    el.id = `item-${id}`;
+    el.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px';
+    el.innerHTML = `
+      <select class="form-control" style="flex:2" data-field="product">
+        <option value="">-- Chọn sản phẩm --</option>
+        ${options}
+      </select>
+      <input class="form-control" type="number" min="1" value="1" style="width:80px" data-field="quantity" />
+      <button type="button" class="btn btn-danger btn-xs" onclick="removeItem(${id})">✕</button>
+    `;
+    document.getElementById('items-container').appendChild(el);
+  }
+
+  function removeItem(id) {
+    document.getElementById(`item-${id}`)?.remove();
+    itemRows = itemRows.filter(i => i !== id);
+  }
+
+  async function submitCreate() {
+    const name    = document.getElementById('c-name').value.trim();
+    const phone   = document.getElementById('c-phone').value.trim();
+    const address = document.getElementById('c-address').value.trim();
+    const note    = document.getElementById('order-note').value.trim();
+
+    if (!name || !phone || !address) {
+      toast('Vui lòng điền đầy đủ thông tin khách hàng', 'error');
+      return;
+    }
+
+    const items = [];
+    for (const id of itemRows) {
+      const row = document.getElementById(`item-${id}`);
+      if (!row) continue;
+      const product  = row.querySelector('[data-field="product"]').value;
+      const quantity = parseInt(row.querySelector('[data-field="quantity"]').value, 10);
+      if (!product) { toast('Vui lòng chọn sản phẩm cho tất cả dòng', 'error'); return; }
+      if (!quantity || quantity < 1) { toast('Số lượng phải ít nhất là 1', 'error'); return; }
+      items.push({ product, quantity });
+    }
+
+    if (items.length === 0) { toast('Đơn hàng cần ít nhất 1 sản phẩm', 'error'); return; }
+
+    const btn = document.getElementById('btn-create');
+    btn.disabled = true; btn.textContent = 'Đang tạo...';
+    try {
+      await Orders.create({ customer: { name, phone, address }, items, note });
+      toast('Tạo đơn hàng thành công');
+      // Reset form
+      ['c-name','c-phone','c-address','order-note'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('items-container').innerHTML = '';
+      itemRows = [];
+      closeModal('modal-create');
+      loadOrders(currentPage);
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Tạo đơn hàng';
+    }
+  }
+
+  // ─── Update status ────────────────────────────────────────────────────────────
+
+  function openStatusModal(id) {
+    const o = orderCache.get(id);
+    if (!o) return;
+    selectedOrderId = id;
+    document.getElementById('status-order-num').textContent = o.orderNumber; // textContent = safe
+    document.getElementById('status-note').value = '';
+
+    const sel = document.getElementById('new-status');
+    sel.innerHTML = '';
+    if (o.status === 'pending') sel.add(new Option('Đã đóng gói', 'packed'));
+    if (o.status === 'packed')  sel.add(new Option('Đã giao',     'shipped'));
+    showModal('modal-status');
+  }
+
+  async function submitStatus() {
+    const status = document.getElementById('new-status').value;
+    const note   = document.getElementById('status-note').value.trim();
+    try {
+      await Orders.updateStatus(selectedOrderId, status, note);
+      toast('Cập nhật trạng thái thành công');
+      closeModal('modal-status');
+      loadOrders(currentPage);
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  }
+
+  // ─── Detail modal ─────────────────────────────────────────────────────────────
+
+  async function viewDetail(id) {
+    showModal('modal-detail');
+    document.getElementById('detail-body').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+    try {
+      const { order: o } = await Orders.get(id);
+      document.getElementById('detail-title').textContent = o.orderNumber;
+      document.getElementById('detail-body').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><div class="text-muted" style="font-size:12px">KHÁCH HÀNG</div>
+            <div class="fw-600">${h(o.customer.name)}</div>
+            <div>${h(o.customer.phone)}</div>
+            <div class="text-muted">${h(o.customer.address)}</div></div>
+          <div><div class="text-muted" style="font-size:12px">TRẠNG THÁI</div>
+            <div style="margin-top:4px">${statusBadge(o.status)}</div>
+            <div class="text-muted" style="font-size:12px;margin-top:4px">${formatDate(o.createdAt)}</div></div>
+        </div>
+        <table style="width:100%;margin-bottom:16px">
+          <thead><tr>
+            <th>Sản phẩm</th><th>SKU</th><th class="text-right">SL</th>
+            <th class="text-right">Đơn giá</th><th class="text-right">Thành tiền</th>
+          </tr></thead>
+          <tbody>
+            ${o.items.map(i => `<tr>
+              <td>${h(i.name)}</td>
+              <td style="font-family:monospace;font-size:12px">${h(i.sku)}</td>
+              <td class="text-right">${i.quantity}</td>
+              <td class="text-right">${formatCurrency(i.price)}</td>
+              <td class="text-right fw-600">${formatCurrency(i.subtotal)}</td>
+            </tr>`).join('')}
+          </tbody>
+          <tfoot><tr style="border-top:2px solid var(--border)">
+            <td colspan="4" class="text-right fw-600" style="padding:10px 14px">Tổng cộng</td>
+            <td class="text-right fw-600" style="padding:10px 14px;font-size:16px">${formatCurrency(o.totalAmount)}</td>
+          </tr></tfoot>
+        </table>
+        ${o.note ? `<div class="text-muted" style="font-size:13px">📝 ${h(o.note)}</div>` : ''}
+        <div style="margin-top:12px">
+          <div class="text-muted" style="font-size:12px;margin-bottom:6px">LỊCH SỬ TRẠNG THÁI</div>
+          ${o.statusHistory.map(entry => `
+            <div style="display:flex;gap:8px;font-size:13px;padding:4px 0">
+              ${statusBadge(entry.status)}
+              <span class="text-muted">${formatDate(entry.createdAt)}</span>
+              ${entry.note ? `— ${h(entry.note)}` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch (err) {
+      document.getElementById('detail-body').innerHTML = `<p class="text-danger">${err.message}</p>`;
+    }
+  }
+
+  document.getElementById('search-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loadOrders(1);
+  });
+
+  Promise.all([loadProducts(), loadOrders(1)]);
+</script>
+</body>
+</html>

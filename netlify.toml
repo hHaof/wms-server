@@ -1,0 +1,20 @@
+[build]
+  # Netlify serves the public/ folder as static files
+  publish = "public"
+  # No build step needed — plain HTML/CSS/JS
+
+[[redirects]]
+  # Proxy all /api/* calls to the backend instead of sending them cross-origin.
+  # This avoids CORS issues and keeps cookies on the same Netlify domain.
+  # Replace YOUR_BACKEND_URL with your Railway or Render service URL.
+  from   = "/api/*"
+  to     = "https://YOUR_BACKEND_URL/api/:splat"
+  status = 200
+  force  = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
