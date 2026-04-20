@@ -8,12 +8,14 @@ const createError = (message, status) => {
 
 const MAX_LIMIT = 100;
 
-const getProducts = async ({ page = 1, limit = 20, category, search, isActive }) => {
+const getProducts = async ({ page = 1, limit = 20, category, search, isActive, stockStatus }) => {
   const filter = {};
 
   if (isActive !== undefined) filter.isActive = isActive === 'true';
   if (category) filter.category = category;
   if (search) filter.$text = { $search: search };
+  if (stockStatus === 'low') filter.$expr = { $lte: ['$stock', '$lowStockThreshold'] };
+  if (stockStatus === 'out') filter.stock = 0;
 
   const safeLimit = Math.min(Math.max(1, Number(limit) || 20), MAX_LIMIT);
   const skip = (page - 1) * safeLimit;

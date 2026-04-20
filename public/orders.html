@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đơn hàng — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div class="layout">
@@ -36,7 +37,10 @@
           <div class="page-title">Danh sách đơn hàng</div>
           <div class="page-subtitle">Quản lý và theo dõi trạng thái đơn hàng</div>
         </div>
-        <button class="btn btn-primary" onclick="showModal('modal-create')">+ Tạo đơn</button>
+        <div class="gap-row">
+          <button class="btn btn-secondary" id="btn-export" onclick="exportExcel()">📊 Xuất Excel</button>
+          <button class="btn btn-primary" onclick="showModal('modal-create')">+ Tạo đơn</button>
+        </div>
       </div>
 
       <div class="card">
@@ -401,6 +405,58 @@
   document.getElementById('search-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loadOrders(1);
   });
+
+  // ─── Excel export ─────────────────────────────────────────────────────────────
+
+  async function exportExcel() {
+    const btn = document.getElementById('btn-export');
+    btn.disabled = true;
+    btn.textContent = 'Đang xuất...';
+
+    try {
+      // Fetch all orders matching current filters (paginate through all pages)
+      const search = document.getElementById('search-input').value.trim();
+      const status = document.getElementById('status-filter').value;
+      const params = { limit: 100 };
+      if (search) params.search = search;
+      if (status) params.status = status;
+
+      let all = [], page = 1, totalPages = 1;
+      do {
+        const data = await Orders.list({ ...params, page });
+        all.push(...data.orders);
+        totalPages = data.pagination.totalPages;
+        page++;
+      } while (page <= totalPages);
+
+      const statusLabel = { pending: 'Chờ đóng gói', packed: 'Đã đóng gói', shipped: 'Đã giao' };
+
+      const rows = all.map(o => ({
+        'Mã đơn':       o.orderNumber,
+        'Khách hàng':   o.customer.name,
+        'SĐT':          o.customer.phone,
+        'Địa chỉ':      o.customer.address,
+        'Sản phẩm':     o.items.map(i => `${i.name} x${i.quantity}`).join('; '),
+        'Tổng tiền':    o.totalAmount,
+        'Trạng thái':   statusLabel[o.status] || o.status,
+        'Ngày tạo':     new Date(o.createdAt).toLocaleString('vi-VN'),
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(rows);
+      // Auto column width
+      ws['!cols'] = [16,20,14,40,60,14,16,18].map(w => ({ wch: w }));
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Đơn hàng');
+      XLSX.writeFile(wb, `don-hang-${new Date().toISOString().slice(0,10)}.xlsx`);
+      toast(`Đã xuất ${rows.length} đơn hàng`);
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📊 Xuất Excel';
+    }
+  }
 
   Promise.all([loadProducts(), loadOrders(1)]);
 </script>

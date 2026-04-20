@@ -187,17 +187,18 @@
     ).join('');
 
     let actions = '';
+    const printBtn = `<button class="btn btn-secondary btn-sm" onclick="printLabel('${o._id}')">🖨️ In nhãn</button>`;
+
     if (o.status === 'pending') {
       if (isUnassigned) {
-        actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>`;
+        actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>${printBtn}`;
       } else if (isAssignedToMe) {
-        // Pass only the ID — data is retrieved from orderCache to avoid XSS via product names in onclick
-        actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>`;
+        actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>${printBtn}`;
       } else {
-        actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>`;
+        actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>${printBtn}`;
       }
     } else if (o.status === 'packed') {
-      actions = `<span class="badge badge-blue">Chờ vận chuyển</span>`;
+      actions = `${printBtn}<span class="badge badge-blue">Chờ vận chuyển</span>`;
     }
 
     return `
@@ -284,6 +285,75 @@
     } finally {
       btn.disabled = false; btn.textContent = '✅ Xác nhận đã đóng gói';
     }
+  }
+
+  // ─── Print label ──────────────────────────────────────────────────────────────
+
+  function printLabel(id) {
+    const o = orderCache.get(id);
+    if (!o) return;
+
+    const escHtml = s => String(s ?? '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    const itemRows = o.items.map(i =>
+      `<tr>
+        <td style="padding:4px 0;border-bottom:1px dashed #e2e8f0">${escHtml(i.name)}</td>
+        <td style="padding:4px 8px;text-align:right;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
+          x${i.quantity} ${escHtml(i.unit || '')}
+        </td>
+      </tr>`
+    ).join('');
+
+    const html = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Nhãn ${escHtml(o.orderNumber)}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #0f172a;
+           width: 10cm; padding: 12px; }
+    .label-header { display: flex; justify-content: space-between;
+                    align-items: center; margin-bottom: 10px; }
+    .order-num { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+    .brand { font-size: 11px; color: #64748b; }
+    hr { border: none; border-top: 2px solid #0f172a; margin: 8px 0; }
+    .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase;
+                     letter-spacing: 1px; color: #64748b; margin-bottom: 4px; }
+    .customer-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+    .customer-phone { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .customer-addr { font-size: 12px; color: #334155; line-height: 1.4; }
+    table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+    .footer { margin-top: 10px; font-size: 10px; color: #94a3b8;
+              text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
+    @media print { @page { margin: 0; size: 10cm auto; } }
+  </style>
+</head>
+<body>
+  <div class="label-header">
+    <div class="order-num">${escHtml(o.orderNumber)}</div>
+    <div class="brand">📦 WMS</div>
+  </div>
+  <hr/>
+  <div class="section-title">Giao đến</div>
+  <div class="customer-name">${escHtml(o.customer?.name)}</div>
+  <div class="customer-phone">${escHtml(o.customer?.phone)}</div>
+  <div class="customer-addr">${escHtml(o.customer?.address)}</div>
+  <hr/>
+  <div class="section-title">Sản phẩm</div>
+  <table>${itemRows}</table>
+  <div class="footer">
+    ${new Date(o.createdAt).toLocaleString('vi-VN')} · WMS Warehouse Management
+  </div>
+  <script>window.onload = () => { window.print(); }<\/script>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank', 'width=440,height=620');
+    if (!win) { toast('Trình duyệt đang chặn popup — cho phép popup để in nhãn', 'error'); return; }
+    win.document.write(html);
+    win.document.close();
   }
 
   // Auto-refresh every 30 seconds to pick up new orders

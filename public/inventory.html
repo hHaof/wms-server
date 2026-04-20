@@ -39,11 +39,24 @@
         <button class="btn btn-primary" onclick="showModal('modal-add')">+ Thêm sản phẩm</button>
       </div>
 
+      <!-- Low stock alert — shown automatically if any product is running low -->
+      <div class="alert-banner" id="low-stock-banner" style="display:none">
+        <span>⚠️</span>
+        <span><strong id="low-stock-count">0</strong> sản phẩm sắp hết hàng</span>
+        <button class="btn btn-secondary btn-xs" onclick="filterLowStock()">Lọc ngay</button>
+        <button class="alert-close" onclick="this.parentElement.style.display='none'">✕</button>
+      </div>
+
       <div class="card">
         <div class="toolbar">
           <input class="form-control toolbar-search" id="search-input" type="text" placeholder="Tìm theo tên, SKU..." />
-          <select class="form-control" id="category-filter" style="width:160px">
+          <select class="form-control" id="category-filter" style="width:150px">
             <option value="">Tất cả danh mục</option>
+          </select>
+          <select class="form-control" id="stock-filter" style="width:160px" onchange="loadProducts(1)">
+            <option value="">Tất cả tồn kho</option>
+            <option value="low">⚠️ Sắp hết hàng</option>
+            <option value="out">❌ Hết hàng (0)</option>
           </select>
           <button class="btn btn-secondary" onclick="loadProducts(1)">🔍 Lọc</button>
         </div>
@@ -176,8 +189,10 @@
 
     try {
       const params = { page, limit: 15 };
-      if (search)   params.search   = search;
-      if (category) params.category = category;
+      if (search)      params.search      = search;
+      if (category)    params.category    = category;
+      const stockStatus = document.getElementById('stock-filter').value;
+      if (stockStatus) params.stockStatus = stockStatus;
 
       const data = await Products.list(params);
       renderTable(data.products);
@@ -298,7 +313,26 @@
     if (e.key === 'Enter') loadProducts(1);
   });
 
+  // Check low stock count on load and show alert banner if needed
+  async function checkLowStock() {
+    try {
+      const data = await Products.list({ stockStatus: 'low', limit: 1 });
+      const count = data.pagination.total;
+      if (count > 0) {
+        document.getElementById('low-stock-count').textContent = count;
+        document.getElementById('low-stock-banner').style.display = 'flex';
+      }
+    } catch (_) {}
+  }
+
+  function filterLowStock() {
+    document.getElementById('stock-filter').value = 'low';
+    document.getElementById('low-stock-banner').style.display = 'none';
+    loadProducts(1);
+  }
+
   loadProducts(1);
+  checkLowStock();
 </script>
 </body>
 </html>
