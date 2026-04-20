@@ -74,6 +74,7 @@ const Products = {
   create: (body) => request('POST', '/products', body),
   update: (id, body) => request('PATCH', `/products/${id}`, body),
   updateStock: (id, adjustment) => request('PATCH', `/products/${id}/stock`, { adjustment }),
+  remove: (id) => request('DELETE', `/products/${id}`),
 };
 
 // ─── Orders ───────────────────────────────────────────────────────────────────

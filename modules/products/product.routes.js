@@ -47,5 +47,6 @@ router.get('/:id', idRule, productController.getProduct);
 router.post('/', requireRole('admin', 'warehouse'), ...createRules, productController.createProduct);
 router.patch('/:id', requireRole('admin', 'warehouse'), ...updateRules, productController.updateProduct);
 router.patch('/:id/stock', requireRole('admin', 'warehouse'), ...stockRules, productController.updateStock);
+router.delete('/:id', requireRole('admin', 'warehouse'), idRule, productController.deleteProduct);
 
 module.exports = router;

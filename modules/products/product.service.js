@@ -14,7 +14,7 @@ const getProducts = async ({ page = 1, limit = 20, category, search, isActive, s
   if (isActive !== undefined) filter.isActive = isActive === 'true';
   if (category) filter.category = category;
   if (search) filter.$text = { $search: search };
-  if (stockStatus === 'low') filter.$expr = { $lte: ['$stock', '$lowStockThreshold'] };
+  if (stockStatus === 'low') filter.$expr = { $and: [{ $gt: ['$stock', 0] }, { $lte: ['$stock', '$lowStockThreshold'] }] };
   if (stockStatus === 'out') filter.stock = 0;
 
   const safeLimit = Math.min(Math.max(1, Number(limit) || 20), MAX_LIMIT);
@@ -93,4 +93,10 @@ const updateStock = async (id, adjustment) => {
   return product;
 };
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, updateStock };
+const deleteProduct = async (id) => {
+  const product = await Product.findByIdAndDelete(id);
+  if (!product) throw createError('Không tìm thấy sản phẩm', 404);
+  return product;
+};
+
+module.exports = { getProducts, getProductById, createProduct, updateProduct, updateStock, deleteProduct };

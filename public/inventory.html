@@ -39,11 +39,18 @@
         <button class="btn btn-primary" onclick="showModal('modal-add')">+ Thêm sản phẩm</button>
       </div>
 
-      <!-- Low stock alert — shown automatically if any product is running low -->
+      <!-- Orange banner: low stock (above 0 but below threshold) -->
       <div class="alert-banner" id="low-stock-banner" style="display:none">
         <span>⚠️</span>
         <span><strong id="low-stock-count">0</strong> sản phẩm sắp hết hàng</span>
-        <button class="btn btn-secondary btn-xs" onclick="filterLowStock()">Lọc ngay</button>
+        <button class="btn btn-secondary btn-xs" onclick="filterByStock('low')">Lọc ngay</button>
+        <button class="alert-close" onclick="this.parentElement.style.display='none'">✕</button>
+      </div>
+      <!-- Red banner: out of stock (quantity = 0) -->
+      <div class="alert-banner alert-banner-danger" id="out-stock-banner" style="display:none">
+        <span>❌</span>
+        <span><strong id="out-stock-count">0</strong> sản phẩm đã hết hàng</span>
+        <button class="btn btn-secondary btn-xs" onclick="filterByStock('out')">Lọc ngay</button>
         <button class="alert-close" onclick="this.parentElement.style.display='none'">✕</button>
       </div>
 
@@ -112,11 +119,11 @@
           <div class="form-group">
             <label class="form-label">Đơn vị</label>
             <select class="form-control" name="unit">
-              <option value="piece">Cái (piece)</option>
+              <option value="piece">Cái</option>
               <option value="kg">Kg</option>
-              <option value="box">Hộp (box)</option>
-              <option value="liter">Lít (liter)</option>
-              <option value="meter">Mét (meter)</option>
+              <option value="box">Hộp</option>
+              <option value="liter">Lít</option>
+              <option value="meter">Mét</option>
             </select>
           </div>
         </div>
@@ -179,10 +186,13 @@
   let selectedProductId = null;
   const productCache = new Map();
 
+  const UNIT_LABEL = { piece: 'cái', kg: 'kg', box: 'hộp', liter: 'lít', meter: 'mét' };
+
   async function loadProducts(page = 1) {
     currentPage = page;
-    const search   = document.getElementById('search-input').value.trim();
-    const category = document.getElementById('category-filter').value;
+    const search      = document.getElementById('search-input').value.trim();
+    const category    = document.getElementById('category-filter').value;
+    const stockStatus = document.getElementById('stock-filter').value;
 
     document.getElementById('product-table').innerHTML =
       `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>`;
@@ -191,7 +201,6 @@
       const params = { page, limit: 15 };
       if (search)      params.search      = search;
       if (category)    params.category    = category;
-      const stockStatus = document.getElementById('stock-filter').value;
       if (stockStatus) params.stockStatus = stockStatus;
 
       const data = await Products.list(params);
@@ -213,7 +222,14 @@
     }
     products.forEach(p => productCache.set(p._id, p));
     tbody.innerHTML = products.map(p => {
-      const lowStock = p.stock <= p.lowStockThreshold;
+      const isOut     = p.stock === 0;
+      const isLow     = !isOut && p.stock <= p.lowStockThreshold;
+      const unitLabel = UNIT_LABEL[p.unit] || p.unit || '';
+
+      let stockBadge = '';
+      if (isOut)      stockBadge = '<span class="badge badge-red" style="margin-left:4px">Hết hàng</span>';
+      else if (isLow) stockBadge = '<span class="badge badge-orange" style="margin-left:4px">Sắp hết</span>';
+
       return `
         <tr>
           <td class="fw-600" style="font-family:monospace">${h(p.sku)}</td>
@@ -223,15 +239,16 @@
           </td>
           <td>${h(p.category)}</td>
           <td>${formatCurrency(p.price)}</td>
-          <td class="${lowStock ? 'stock-low' : ''}">
-            ${p.stock} ${h(p.unit)}
-            ${lowStock ? '<span class="badge badge-red" style="margin-left:4px">Sắp hết</span>' : ''}
+          <td class="${isOut ? 'text-danger fw-600' : isLow ? 'stock-low' : ''}">
+            ${p.stock} ${h(unitLabel)}
+            ${stockBadge}
           </td>
           <td>${p.isActive
             ? '<span class="badge badge-green">Hoạt động</span>'
             : '<span class="badge badge-grey">Vô hiệu</span>'}</td>
-          <td class="text-right">
+          <td class="text-right" style="white-space:nowrap">
             <button class="btn btn-secondary btn-xs" onclick="openStockModal('${p._id}')">Kho</button>
+            <button class="btn btn-danger btn-xs" onclick="deleteProduct('${p._id}')" style="margin-left:4px">Xóa</button>
           </td>
         </tr>
       `;
@@ -288,7 +305,6 @@
     const p = productCache.get(id);
     if (!p) return;
     selectedProductId = id;
-    // textContent is safe — no escaping needed
     document.getElementById('stock-product-name').textContent = p.name;
     document.getElementById('stock-current').textContent = p.stock;
     document.getElementById('stock-adjustment').value = '';
@@ -308,27 +324,46 @@
     }
   }
 
-  // Search on Enter
+  async function deleteProduct(id) {
+    const p = productCache.get(id);
+    if (!p) return;
+    if (!confirm(`Xóa sản phẩm "${p.name}"?\nHành động này không thể hoàn tác.`)) return;
+    try {
+      await Products.remove(id);
+      toast('Đã xóa sản phẩm');
+      productCache.delete(id);
+      loadProducts(currentPage);
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+  }
+
+  function filterByStock(status) {
+    document.getElementById('stock-filter').value = status;
+    document.getElementById('low-stock-banner').style.display = 'none';
+    document.getElementById('out-stock-banner').style.display = 'none';
+    loadProducts(1);
+  }
+
   document.getElementById('search-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loadProducts(1);
   });
 
-  // Check low stock count on load and show alert banner if needed
   async function checkLowStock() {
     try {
-      const data = await Products.list({ stockStatus: 'low', limit: 1 });
-      const count = data.pagination.total;
-      if (count > 0) {
-        document.getElementById('low-stock-count').textContent = count;
+      const [lowData, outData] = await Promise.all([
+        Products.list({ stockStatus: 'low', limit: 1 }),
+        Products.list({ stockStatus: 'out', limit: 1 }),
+      ]);
+      if (lowData.pagination.total > 0) {
+        document.getElementById('low-stock-count').textContent = lowData.pagination.total;
         document.getElementById('low-stock-banner').style.display = 'flex';
       }
+      if (outData.pagination.total > 0) {
+        document.getElementById('out-stock-count').textContent = outData.pagination.total;
+        document.getElementById('out-stock-banner').style.display = 'flex';
+      }
     } catch (_) {}
-  }
-
-  function filterLowStock() {
-    document.getElementById('stock-filter').value = 'low';
-    document.getElementById('low-stock-banner').style.display = 'none';
-    loadProducts(1);
   }
 
   loadProducts(1);

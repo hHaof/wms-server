@@ -49,4 +49,12 @@ const updateStock = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getProducts, getProduct, createProduct, updateProduct, updateStock };
+const deleteProduct = async (req, res, next) => {
+  try {
+    if (!handleValidation(req, res)) return;
+    await productService.deleteProduct(req.params.id);
+    res.json({ message: 'Đã xóa sản phẩm' });
+  } catch (err) { next(err); }
+};
+
+module.exports = { getProducts, getProduct, createProduct, updateProduct, updateStock, deleteProduct };

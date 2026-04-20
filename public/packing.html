@@ -296,14 +296,21 @@
     const escHtml = s => String(s ?? '')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    const itemRows = o.items.map(i =>
-      `<tr>
+    // Format as Vietnamese style: 1.000.000đ
+    const fmtVND = n => new Intl.NumberFormat('vi-VN').format(n ?? 0) + 'đ';
+
+    const itemRows = o.items.map(i => {
+      const subtotal = i.subtotal ?? (i.price * i.quantity);
+      return `<tr>
         <td style="padding:4px 0;border-bottom:1px dashed #e2e8f0">${escHtml(i.name)}</td>
-        <td style="padding:4px 8px;text-align:right;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
-          x${i.quantity} ${escHtml(i.unit || '')}
+        <td style="padding:4px 6px;text-align:center;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
+          x${i.quantity}
         </td>
-      </tr>`
-    ).join('');
+        <td style="padding:4px 0;text-align:right;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
+          ${fmtVND(subtotal)}
+        </td>
+      </tr>`;
+    }).join('');
 
     const html = `<!DOCTYPE html>
 <html lang="vi">
@@ -325,6 +332,7 @@
     .customer-phone { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
     .customer-addr { font-size: 12px; color: #334155; line-height: 1.4; }
     table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+    .total-row td { padding-top: 6px; font-weight: 700; border-top: 2px solid #0f172a; }
     .footer { margin-top: 10px; font-size: 10px; color: #94a3b8;
               text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
     @media print { @page { margin: 0; size: 10cm auto; } }
@@ -342,7 +350,13 @@
   <div class="customer-addr">${escHtml(o.customer?.address)}</div>
   <hr/>
   <div class="section-title">Sản phẩm</div>
-  <table>${itemRows}</table>
+  <table>
+    ${itemRows}
+    <tr class="total-row">
+      <td colspan="2">Tổng cộng</td>
+      <td style="text-align:right;white-space:nowrap">${fmtVND(o.totalAmount)}</td>
+    </tr>
+  </table>
   <div class="footer">
     ${new Date(o.createdAt).toLocaleString('vi-VN')} · WMS Warehouse Management
   </div>
