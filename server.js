@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 // Fail fast — undefined JWT secrets would let the server start but sign/verify
 // calls would throw or produce tokens with a literal "undefined" secret.
 const REQUIRED_ENV = ['MONGO_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'];
