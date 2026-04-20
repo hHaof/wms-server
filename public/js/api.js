@@ -1,7 +1,5 @@
-// Relative path works in both environments:
-// - Dev: browser hits Express on localhost:5000, /api/* is handled directly
-// - Prod: browser hits Netlify, /api/* is proxied to Railway/Render via netlify.toml
-const API_BASE = '/api';
+const BASE_URL = 'https://wms-server-production-dc2a.up.railway.app';
+const API_BASE = `${BASE_URL}/api`;
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 

@@ -15,15 +15,10 @@ app.set('trust proxy', 1);
 
 app.use(helmet());
 
-// CORS — only needed when frontend is on a different origin (separate Netlify/Vercel deploy).
-// When using Netlify's proxy rewrite, requests arrive as same-origin and CORS is irrelevant.
-// Set CORS_ORIGIN to your Netlify URL if you call the API directly from another domain.
-if (process.env.CORS_ORIGIN) {
-  app.use(cors({
-    origin: process.env.CORS_ORIGIN.split(',').map(o => o.trim()),
-    credentials: true,
-  }));
-}
+app.use(cors({
+  origin: 'https://splendid-zuccutto-2d6909.netlify.app',
+  credentials: true,
+}));
 
 // Serve frontend in development (production frontend lives on Netlify/Vercel)
 if (process.env.NODE_ENV !== 'production') {
