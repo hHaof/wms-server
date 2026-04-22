@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+  <style>
+    /* Hover effects that require pseudo-selectors */
+    .kpi-card { transition: box-shadow .18s ease, transform .18s ease; }
+    .kpi-card:hover { box-shadow: 0 14px 32px -8px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .task-row:hover { background: #f8fafc !important; }
+    .dash-row:hover td { background: #f8fafc; }
+    .dash-row td { transition: background .12s; }
+    .quick-btn { transition: transform .12s ease, box-shadow .12s ease; text-decoration: none !important; }
+    .quick-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.12) !important; }
+    .dash-action-btn:hover { filter: brightness(.93); }
+  </style>
 </head>
 <body>
 <div class="layout">
@@ -87,39 +100,52 @@
     </header>
 
     <main class="content">
-      <div class="page-header">
+
+      <!-- ── 1. Welcome Banner + Quick Actions ──────────────────────────────────── -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
         <div>
-          <div class="page-title">Welcome, <span id="greeting-name">...</span> 👋</div>
-          <div class="page-subtitle" id="greeting-date"></div>
+          <div style="font-size:23px;font-weight:800;color:#0f172a;letter-spacing:-.5px;line-height:1.2">
+            Welcome back, <span id="greeting-name">...</span> 👋
+          </div>
+          <div style="font-size:13px;color:#64748b;margin-top:5px" id="greeting-date"></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <!-- Primary: Start Packing -->
+          <a href="/packing.html" class="quick-btn" style="display:inline-flex;align-items:center;gap:7px;padding:9px 17px;border-radius:10px;background:#4f46e5;color:#fff;font-size:13.5px;font-weight:600;box-shadow:0 1px 4px rgba(79,70,229,.35)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+            </svg>
+            Start Packing
+          </a>
+          <!-- Secondary: New Order -->
+          <a href="/orders.html" class="quick-btn" style="display:inline-flex;align-items:center;gap:7px;padding:9px 17px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;color:#374151;font-size:13.5px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            New Order
+          </a>
+          <!-- Secondary: Add Product -->
+          <a href="/inventory.html" class="quick-btn" style="display:inline-flex;align-items:center;gap:7px;padding:9px 17px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;color:#374151;font-size:13.5px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+            </svg>
+            Add Product
+          </a>
         </div>
       </div>
 
-      <div class="stats-grid" id="stats-grid">
-        <div class="loading"><div class="spinner"></div> Loading...</div>
+      <!-- ── 2. KPI Cards ────────────────────────────────────────────────────────── -->
+      <div id="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Loading...</div>
       </div>
 
-      <div class="card mt-16">
-        <div class="card-header">
-          <div class="card-title">Recent Orders</div>
-          <a href="/orders.html" class="btn btn-secondary btn-sm">View all</a>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Order #</th>
-                <th>Customer</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Created</th>
-              </tr>
-            </thead>
-            <tbody id="recent-orders">
-              <tr><td colspan="5"><div class="loading"><div class="spinner"></div></div></td></tr>
-            </tbody>
-          </table>
-        </div>
+      <!-- ── 3. Tasks Panel + Recent Orders ──────────────────────────────────────── -->
+      <div style="display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:start">
+        <div id="tasks-panel"><div class="loading"><div class="spinner"></div></div></div>
+        <div id="orders-panel"><div class="loading"><div class="spinner"></div></div></div>
       </div>
+
     </main>
   </div>
 </div>
@@ -140,6 +166,50 @@
   document.getElementById('greeting-date').textContent =
     new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+  // ─── KPI Card ─────────────────────────────────────────────────────────────────
+
+  function kpiCard({ iconPath, iconBg, iconStroke, value, label, badgeText, badgeBg, badgeColor, subHtml }) {
+    return `
+      <div class="kpi-card" style="background:#fff;border-radius:16px;padding:22px 24px 20px;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px">
+          <div style="width:44px;height:44px;border-radius:12px;background:${iconBg};display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" fill="none" stroke="${iconStroke}" stroke-width="1.75" viewBox="0 0 24 24">
+              ${iconPath}
+            </svg>
+          </div>
+          <span style="font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:20px;background:${badgeBg};color:${badgeColor};white-space:nowrap">${badgeText}</span>
+        </div>
+        <div style="font-size:34px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1;margin-bottom:5px">${value}</div>
+        <div style="font-size:13px;font-weight:500;color:#64748b;margin-bottom:10px">${label}</div>
+        <div style="font-size:11.5px;font-weight:600;line-height:1.4">${subHtml}</div>
+      </div>
+    `;
+  }
+
+  // ─── Task Row ──────────────────────────────────────────────────────────────────
+
+  function taskRow({ href, iconBg, iconStroke, iconPath, title, desc, count, countBg, countColor }) {
+    const hasAlert = count > 0;
+    return `
+      <a href="${href}" class="task-row" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:12px;cursor:pointer;text-decoration:none">
+        <div style="display:flex;align-items:center;gap:11px">
+          <div style="width:36px;height:36px;border-radius:10px;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="15" height="15" fill="none" stroke="${iconStroke}" stroke-width="2" viewBox="0 0 24 24">
+              ${iconPath}
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1e293b">${title}</div>
+            <div style="font-size:11.5px;color:#94a3b8;margin-top:1px">${desc}</div>
+          </div>
+        </div>
+        <span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;background:${hasAlert ? countBg : '#f1f5f9'};color:${hasAlert ? countColor : '#94a3b8'}">${count}</span>
+      </a>
+    `;
+  }
+
+  // ─── Dashboard Load ────────────────────────────────────────────────────────────
+
   async function loadDashboard() {
     try {
       const [prodData, orderData] = await Promise.all([
@@ -150,94 +220,170 @@
       const products = prodData.products || [];
       const orders   = orderData.orders   || [];
 
-      const lowStock = products.filter(p => p.stock <= p.lowStockThreshold && p.stock > 0).length;
+      const lowStock = products.filter(p => p.stock > 0 && p.stock <= p.lowStockThreshold).length;
       const outStock = products.filter(p => p.stock === 0).length;
       const pending  = orders.filter(o => o.status === 'pending').length;
       const packed   = orders.filter(o => o.status === 'packed').length;
       const shipped  = orders.filter(o => o.status === 'shipped').length;
 
-      const subStock = [
-        lowStock > 0 ? `<span class="text-danger">${lowStock} low stock</span>` : '',
-        outStock > 0 ? `<span class="text-danger">${outStock} out of stock</span>` : '',
-      ].filter(Boolean).join(' · ') || '<span class="text-success">Stock levels healthy</span>';
+      const today    = new Date().toDateString();
+      const todayNew = orders.filter(o => new Date(o.createdAt).toDateString() === today).length;
 
+      const h = escapeHtml;
+
+      // ── KPI Grid ──────────────────────────────────────────────────────────────
+
+      const stockAlerts = lowStock + outStock;
       document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card">
-          <div class="stat-icon-wrap stat-icon-indigo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-label">Products</div>
-            <div class="stat-value">${products.length}</div>
-            <div class="stat-sub">${subStock}</div>
-          </div>
-        </div>
+        ${kpiCard({
+          iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>`,
+          iconBg: '#eef2ff', iconStroke: '#4f46e5',
+          value: products.length, label: 'Total Products',
+          badgeText: stockAlerts > 0 ? `${stockAlerts} alert${stockAlerts > 1 ? 's' : ''}` : 'Healthy',
+          badgeBg: stockAlerts > 0 ? '#fef2f2' : '#f0fdf4',
+          badgeColor: stockAlerts > 0 ? '#dc2626' : '#16a34a',
+          subHtml: stockAlerts > 0
+            ? [lowStock > 0  ? `<span style="color:#f59e0b">${lowStock} low stock</span>` : '',
+               outStock > 0  ? `<span style="color:#ef4444">${outStock} out of stock</span>` : '']
+                .filter(Boolean).join('<span style="color:#cbd5e1"> · </span>')
+            : `<span style="color:#22c55e">All levels OK</span>`,
+        })}
+        ${kpiCard({
+          iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+          iconBg: '#fffbeb', iconStroke: '#d97706',
+          value: pending, label: 'Pending Orders',
+          badgeText: pending > 0 ? 'Needs packing' : 'All clear',
+          badgeBg: pending > 0 ? '#fffbeb' : '#f0fdf4',
+          badgeColor: pending > 0 ? '#d97706' : '#16a34a',
+          subHtml: pending > 0
+            ? `<span style="color:#f59e0b">${pending} order${pending !== 1 ? 's' : ''} awaiting fulfillment</span>`
+            : `<span style="color:#22c55e">No pending orders</span>`,
+        })}
+        ${kpiCard({
+          iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>`,
+          iconBg: '#eff6ff', iconStroke: '#2563eb',
+          value: packed, label: 'Ready to Ship',
+          badgeText: packed > 0 ? 'Ship now' : 'None ready',
+          badgeBg: packed > 0 ? '#eff6ff' : '#f8fafc',
+          badgeColor: packed > 0 ? '#2563eb' : '#94a3b8',
+          subHtml: packed > 0
+            ? `<span style="color:#3b82f6">${packed} order${packed !== 1 ? 's' : ''} awaiting dispatch</span>`
+            : `<span style="color:#94a3b8">No packed orders</span>`,
+        })}
+        ${kpiCard({
+          iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+          iconBg: '#f0fdf4', iconStroke: '#16a34a',
+          value: shipped, label: 'Delivered',
+          badgeText: todayNew > 0 ? `+${todayNew} today` : 'All time',
+          badgeBg: '#f0fdf4', badgeColor: '#16a34a',
+          subHtml: `<span style="color:#22c55e">${shipped} order${shipped !== 1 ? 's' : ''} completed</span>`,
+        })}
+      `;
 
-        <div class="stat-card">
-          <div class="stat-icon-wrap stat-icon-amber">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-label">Pending</div>
-            <div class="stat-value" style="color:var(--warning)">${pending}</div>
-            <div class="stat-sub">orders</div>
-          </div>
-        </div>
+      // ── Today's Tasks ─────────────────────────────────────────────────────────
 
-        <div class="stat-card">
-          <div class="stat-icon-wrap stat-icon-blue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+      document.getElementById('tasks-panel').innerHTML = `
+        <div style="background:#fff;border-radius:16px;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden">
+          <div style="padding:14px 18px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:7px">
+            <svg width="15" height="15" fill="none" stroke="#64748b" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
             </svg>
+            <span style="font-size:13.5px;font-weight:700;color:#1e293b">Today's Tasks</span>
           </div>
-          <div class="stat-content">
-            <div class="stat-label">Packed</div>
-            <div class="stat-value" style="color:#2563eb">${packed}</div>
-            <div class="stat-sub">orders</div>
+          <div style="padding:8px 8px">
+            ${taskRow({
+              href: '/packing.html',
+              iconBg: '#fffbeb', iconStroke: '#d97706',
+              iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+              title: 'Orders to Pack', desc: 'Awaiting fulfillment',
+              count: pending, countBg: '#fffbeb', countColor: '#d97706',
+            })}
+            ${taskRow({
+              href: '/orders.html',
+              iconBg: '#eff6ff', iconStroke: '#2563eb',
+              iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 0V5.625c0-.621.504-1.125 1.125-1.125H20.25M7.5 14.25H3.75"/>`,
+              title: 'Ready to Ship', desc: 'Packed & waiting',
+              count: packed, countBg: '#eff6ff', countColor: '#2563eb',
+            })}
+            ${taskRow({
+              href: '/inventory.html',
+              iconBg: '#fffbeb', iconStroke: '#d97706',
+              iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>`,
+              title: 'Low Stock Items', desc: 'Needs replenishment',
+              count: lowStock, countBg: '#fffbeb', countColor: '#d97706',
+            })}
+            ${taskRow({
+              href: '/inventory.html',
+              iconBg: '#fef2f2', iconStroke: '#dc2626',
+              iconPath: `<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>`,
+              title: 'Out of Stock', desc: 'Urgent restock needed',
+              count: outStock, countBg: '#fef2f2', countColor: '#dc2626',
+            })}
           </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon-wrap stat-icon-green">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-label">Delivered</div>
-            <div class="stat-value" style="color:var(--success)">${shipped}</div>
-            <div class="stat-sub">orders</div>
+          <div style="padding:11px 18px;background:#f8fafc;border-top:1px solid #f1f5f9">
+            <a href="/orders.html" style="font-size:12.5px;font-weight:600;color:#4f46e5;text-decoration:none">View all orders →</a>
           </div>
         </div>
       `;
 
-      const recent = orders.slice(0, 8);
-      const tbody  = document.getElementById('recent-orders');
-      const h      = escapeHtml;
-      if (!recent.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">📋</div><p>No orders yet</p></div></td></tr>`;
-      } else {
-        tbody.innerHTML = recent.map(o => `
-          <tr>
-            <td class="fw-600" style="font-family:monospace">${h(o.orderNumber)}</td>
-            <td>
-              <div class="fw-600">${h(o.customer.name)}</div>
-              <div class="text-muted" style="font-size:12px">${h(o.customer.phone)}</div>
-            </td>
-            <td>${statusBadge(o.status)}</td>
-            <td class="fw-600">${formatCurrency(o.totalAmount)}</td>
-            <td class="text-muted">${formatDate(o.createdAt)}</td>
-          </tr>
-        `).join('');
-      }
+      // ── Recent Orders ─────────────────────────────────────────────────────────
+
+      const recent = orders.slice(0, 6);
+      document.getElementById('orders-panel').innerHTML = `
+        <div style="background:#fff;border-radius:16px;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden">
+          <div style="padding:14px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:7px">
+              <svg width="15" height="15" fill="none" stroke="#64748b" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"/>
+              </svg>
+              <span style="font-size:13.5px;font-weight:700;color:#1e293b">Recent Orders</span>
+            </div>
+            <a href="/orders.html" style="font-size:12.5px;font-weight:600;color:#4f46e5;text-decoration:none">View all →</a>
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse">
+              <thead>
+                <tr style="border-bottom:1px solid #f1f5f9">
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">Order #</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">Customer</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">Items</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">Total</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">Status</th>
+                  <th style="padding:10px 16px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">Date</th>
+                  <th style="padding:10px 16px;text-align:right;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${!recent.length
+                  ? `<tr><td colspan="7" style="padding:52px 16px;text-align:center;color:#94a3b8">
+                       <div style="font-size:28px;margin-bottom:8px">📋</div>
+                       <div style="font-size:14px">No orders yet</div>
+                     </td></tr>`
+                  : recent.map(o => `
+                      <tr class="dash-row">
+                        <td style="padding:13px 16px;font-family:monospace;font-size:12px;font-weight:700;color:#475569">${h(o.orderNumber)}</td>
+                        <td style="padding:13px 16px">
+                          <div style="font-size:13px;font-weight:600;color:#1e293b">${h(o.customer.name)}</div>
+                          <div style="font-size:11.5px;color:#94a3b8;margin-top:1px">${h(o.customer.phone)}</div>
+                        </td>
+                        <td style="padding:13px 16px;font-size:13px;color:#64748b">${o.items.length} item${o.items.length !== 1 ? 's' : ''}</td>
+                        <td style="padding:13px 16px;font-size:13px;font-weight:700;color:#1e293b">${formatCurrency(o.totalAmount)}</td>
+                        <td style="padding:13px 16px">${statusBadge(o.status)}</td>
+                        <td style="padding:13px 16px;font-size:12px;color:#94a3b8;white-space:nowrap">${formatDate(o.createdAt)}</td>
+                        <td style="padding:13px 16px;text-align:right">
+                          <div style="display:flex;gap:6px;justify-content:flex-end">
+                            <a href="/orders.html" class="dash-action-btn" style="font-size:12px;padding:5px 11px;border-radius:7px;background:#f1f5f9;color:#475569;font-weight:600;text-decoration:none;cursor:pointer">View</a>
+                            ${o.status !== 'shipped' ? `<a href="/packing.html" class="dash-action-btn" style="font-size:12px;padding:5px 11px;border-radius:7px;background:#4f46e5;color:#fff;font-weight:600;text-decoration:none;cursor:pointer">Process</a>` : ''}
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
     } catch (err) {
       toast(err.message, 'error');
     }
