@@ -263,9 +263,9 @@
       if (stockStatus) params.stockStatus = stockStatus;
 
       const data = await Products.list(params);
-      renderTable(data.products);
-      renderPagination(data.pagination);
-      populateCategories(data.products);
+      renderTable(data?.products || []);
+      renderPagination(data?.pagination || { totalPages: 1, page: 1 });
+      populateCategories(data?.products || []);
     } catch (err) {
       toast(err.message, 'error');
     }
@@ -411,11 +411,11 @@
         Products.list({ stockStatus: 'low', limit: 1 }),
         Products.list({ stockStatus: 'out', limit: 1 }),
       ]);
-      if (lowData.pagination.total > 0) {
+      if ((lowData?.pagination?.total ?? 0) > 0) {
         document.getElementById('low-stock-count').textContent = lowData.pagination.total;
         document.getElementById('low-stock-banner').style.display = 'flex';
       }
-      if (outData.pagination.total > 0) {
+      if ((outData?.pagination?.total ?? 0) > 0) {
         document.getElementById('out-stock-count').textContent = outData.pagination.total;
         document.getElementById('out-stock-banner').style.display = 'flex';
       }

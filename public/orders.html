@@ -240,7 +240,7 @@
   async function loadProducts() {
     try {
       const data = await Products.list({ limit: 200 });
-      allProducts = data.products || [];
+      allProducts = data?.products || [];
     } catch (_) {}
   }
 
@@ -258,8 +258,8 @@
       if (status) params.status = status;
 
       const data = await Orders.list(params);
-      renderTable(data.orders);
-      renderPagination(data.pagination);
+      renderTable(data?.orders || []);
+      renderPagination(data?.pagination || { totalPages: 1, page: 1 });
     } catch (err) {
       toast(err.message, 'error');
     }
@@ -411,7 +411,9 @@
     showModal('modal-detail');
     document.getElementById('detail-body').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     try {
-      const { order: o } = await Orders.get(id);
+      const _res = await Orders.get(id);
+      const o = _res?.order;
+      if (!o) throw new Error('Order not found');
       document.getElementById('detail-title').textContent = o.orderNumber;
       document.getElementById('detail-body').innerHTML = `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
@@ -484,8 +486,8 @@
       let all = [], page = 1, totalPages = 1;
       do {
         const data = await Orders.list({ ...params, page });
-        all.push(...data.orders);
-        totalPages = data.pagination.totalPages;
+        all.push(...(data?.orders || []));
+        totalPages = data?.pagination?.totalPages ?? 1;
         page++;
       } while (page <= totalPages);
 

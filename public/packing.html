@@ -209,7 +209,8 @@
 
   async function loadQueue() {
     try {
-      const { orders } = await Orders.packingQueue();
+      const _pq = await Orders.packingQueue();
+      const orders = _pq?.orders || [];
       allOrders = orders;
       orders.forEach(o => orderCache.set(o._id, o));
       updateSummary();
