@@ -57,6 +57,12 @@ const orderSchema = new mongoose.Schema(
     // Packer assigned to pack this order
     assignedPacker: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     note: { type: String, trim: true, maxlength: 500 },
+    shippingInfo: {
+      size: { type: String, trim: true },
+      designLink: { type: String, trim: true },
+      mockupLink: { type: String, trim: true },
+      labelLink: { type: String, trim: true },
+    },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true }
