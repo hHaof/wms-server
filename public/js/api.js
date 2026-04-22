@@ -1,7 +1,7 @@
 const BASE_URL = 'https://wms-server-production-dc2a.up.railway.app';
 const API_BASE = `${BASE_URL}/api`;
 
-const DEMO_MODE = false; // ← FIXED: was true, causing silent 401 failures
+const DEMO_MODE = false; // FIXED: was true, caused silent 401 failures
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
@@ -18,9 +18,7 @@ function requireAuth() {
 }
 
 async function logout() {
-  try {
-    await request('POST', '/auth/logout');
-  } catch (_) { /* ignore — clear local state regardless */ }
+  try { await request('POST', '/auth/logout'); } catch (_) {}
   clearToken();
   window.location.href = '/login.html';
 }
@@ -31,7 +29,7 @@ async function tryRefresh() {
   try {
     const res = await fetch(`${API_BASE}/auth/refresh`, {
       method: 'POST',
-      credentials: 'include', // sends httpOnly refreshToken cookie
+      credentials: 'include',
     });
     if (!res.ok) return false;
     const data = await res.json();
@@ -57,7 +55,6 @@ async function request(method, path, body = null, _retry = true) {
     body: body ? JSON.stringify(body) : null,
   });
 
-  // Auto-refresh expired access token (one retry)
   if (res.status === 401 && _retry) {
     const refreshed = await tryRefresh();
     if (refreshed) return request(method, path, body, false);
@@ -66,7 +63,6 @@ async function request(method, path, body = null, _retry = true) {
     return;
   }
 
-  // Non-retried 401 or other auth failures
   if (res.status === 401) {
     clearToken();
     window.location.href = '/login.html';
@@ -74,12 +70,7 @@ async function request(method, path, body = null, _retry = true) {
   }
 
   const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    const msg = data.message || `Error ${res.status}`;
-    throw new Error(msg);
-  }
-
+  if (!res.ok) throw new Error(data.message || `Error ${res.status}`);
   return data;
 }
 
@@ -111,12 +102,12 @@ const Orders = {
   list: (params = {}) => request('GET', '/orders?' + new URLSearchParams(params)),
   get: (id) => request('GET', `/orders/${id}`),
   create: (body) => request('POST', '/orders', body),
-  updateStatus: (id, status, note) => request('PATCH', `/orders/${id}/status`, { status, note }),
-  getPackingQueue: () => request('GET', '/orders/packing'),
+  updateStatus: (id, status, note = '') => request('PATCH', `/orders/${id}/status`, { status, note }),
+  packingQueue: () => request('GET', '/orders/packing'),
   claim: (id) => request('PATCH', `/orders/${id}/claim`),
 };
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
+// ─── UI Utilities ─────────────────────────────────────────────────────────────
 
 function escapeHtml(str) {
   if (str == null) return '';
@@ -128,38 +119,55 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function toast(msg, type = 'success') {
+function toast(message, type = 'success') {
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
-  el.textContent = msg;
+  el.textContent = message;
   document.body.appendChild(el);
-  setTimeout(() => el.classList.add('show'), 10);
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
 }
 
-function showModal(id) { document.getElementById(id)?.classList.add('open'); }
-function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+function showModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal')) e.target.classList.remove('open');
+});
+
+function statusBadge(status) {
+  const map = {
+    pending: ['badge-yellow', 'Pending'],
+    packed:  ['badge-blue',   'Packed'],
+    shipped: ['badge-green',  'Shipped'],
+  };
+  const [cls, label] = map[status] || ['badge-grey', status];
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+const VND_TO_USD = 1 / 25000;
+
+function formatCurrency(n) {
+  const usd = (Number(n) || 0) * VND_TO_USD;
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usd);
+}
+
+function formatDate(d) {
+  return new Date(d).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
+}
 
 function markActiveNav() {
-  const path = window.location.pathname.split('/').pop() || 'dashboard.html';
-  document.querySelectorAll('.nav-link').forEach(a => {
-    const href = a.getAttribute('href')?.split('/').pop();
-    if (href === path) a.classList.add('active');
+  const page = location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-link').forEach((a) => {
+    a.classList.toggle('active', a.getAttribute('href') === page);
   });
 }
 
 function renderUser() {
-  const user = getUser();
-  if (!user) return;
-  const initials = (user.name || '?')[0].toUpperCase();
-  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
-  document.querySelectorAll('.user-name').forEach(el => el.textContent = user.name || '');
-  document.querySelectorAll('.user-role').forEach(el => el.textContent = user.role || '');
-}
-function formatCurrency(amount, currency = 'USD') {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 2,
-  }).format(amount || 0);
+  const u = getUser();
+  const el = document.getElementById('user-name');
+  if (el && u) el.textContent = u.name;
 }
