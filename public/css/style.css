@@ -59,12 +59,12 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   border-bottom: 1px solid rgba(236,72,153,.2);
 }
 .brand-icon {
-  width: 40px; height: 40px; border-radius: 0;
+  width: 72px; height: 72px; border-radius: 0;
   background: transparent !important;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   box-shadow: none !important; padding: 0;
 }
-.brand-icon img { width: 40px; height: 40px; object-fit: contain; }
+.brand-icon img { width: 72px; height: 72px; object-fit: contain; }
 .brand-icon svg { width: 20px; height: 20px; color: #ec4899; }
 .brand-name { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
 .brand-sub  { font-size: 11px; color: #475569; margin-top: 1px; }
