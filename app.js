@@ -24,6 +24,8 @@ app.use(cors({
     'http://allfastllc.xyz',
     'http://www.allfastllc.xyz',
     'https://wms-server-kappa.vercel.app',
+    'https://wms-frontend-bdybcyzod-haos-projects-5aa263d8.vercel.app',
+    'https://wms-frontend-beige.vercel.app',
   ],
   credentials: true,
 }));
