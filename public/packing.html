@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đóng gói — WMS</title>
+  <title>Fulfillment — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
   <style>
     .refresh-dot {
@@ -27,19 +27,19 @@
       </div>
       <div>
         <div class="brand-name">WMS</div>
-        <div class="brand-sub">Quản lý kho hàng</div>
+        <div class="brand-sub">Warehouse Management</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-label">Điều hướng</span>
+      <span class="nav-label">Navigation</span>
 
       <a class="nav-link" href="/dashboard.html">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
         </svg>
-        <span>Tổng quan</span>
+        <span>Dashboard</span>
       </a>
 
       <a class="nav-link" href="/inventory.html">
@@ -47,7 +47,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
         </svg>
-        <span>Kho hàng</span>
+        <span>Inventory</span>
       </a>
 
       <a class="nav-link" href="/orders.html">
@@ -55,7 +55,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
         </svg>
-        <span>Đơn hàng</span>
+        <span>Orders</span>
       </a>
 
       <a class="nav-link" href="/packing.html">
@@ -64,7 +64,7 @@
             d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
-        <span>Đóng gói</span>
+        <span>Fulfillment</span>
       </a>
     </nav>
 
@@ -74,7 +74,7 @@
         <div class="sidebar-user-info">
           <div class="sidebar-user-name" id="user-name">...</div>
         </div>
-        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+        <button class="sidebar-logout-btn" onclick="logout()" title="Sign out">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
@@ -87,10 +87,10 @@
   <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
-      <div class="topbar-title">Đóng gói</div>
+      <div class="topbar-title">Fulfillment</div>
       <div class="topbar-user">
         <span style="font-size:12.5px;color:var(--text-muted)">
-          <span class="refresh-dot"></span>Tự động làm mới
+          <span class="refresh-dot"></span>Auto-refresh
         </span>
         <div class="user-avatar" id="topbar-avatar">?</div>
       </div>
@@ -99,16 +99,16 @@
     <main class="content">
       <div class="page-header">
         <div>
-          <div class="page-title">Hàng đợi đóng gói</div>
-          <div class="page-subtitle">Nhận đơn → Đóng gói → Bàn giao vận chuyển</div>
+          <div class="page-title">Packing Queue</div>
+          <div class="page-subtitle">Claim → Pack → Hand off to shipping</div>
         </div>
         <div class="gap-row">
           <div id="filter-tabs" class="gap-row">
-            <button class="btn btn-primary btn-sm" onclick="setFilter('all', this)">Tất cả</button>
-            <button class="btn btn-secondary btn-sm" onclick="setFilter('pending', this)">Chờ xử lý</button>
-            <button class="btn btn-secondary btn-sm" onclick="setFilter('packed', this)">Đã gói</button>
+            <button class="btn btn-primary btn-sm" onclick="setFilter('all', this)">All</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('pending', this)">Pending</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('packed', this)">Packed</button>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="loadQueue()">↻ Làm mới</button>
+          <button class="btn btn-secondary btn-sm" onclick="loadQueue()">↻ Refresh</button>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Chờ đóng gói</div>
+            <div class="stat-label">Pending</div>
             <div class="stat-value" style="color:var(--warning)" id="count-pending">—</div>
           </div>
         </div>
@@ -132,7 +132,7 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Đơn của tôi</div>
+            <div class="stat-label">My Orders</div>
             <div class="stat-value" style="color:var(--primary)" id="count-mine">—</div>
           </div>
         </div>
@@ -143,14 +143,14 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Đã gói xong</div>
+            <div class="stat-label">Packed</div>
             <div class="stat-value" style="color:var(--success)" id="count-packed">—</div>
           </div>
         </div>
       </div>
 
       <div id="queue-container">
-        <div class="loading"><div class="spinner"></div> Đang tải hàng đợi...</div>
+        <div class="loading"><div class="spinner"></div> Loading queue...</div>
       </div>
     </main>
   </div>
@@ -160,21 +160,21 @@
 <div class="modal" id="modal-pack">
   <div class="modal-box" style="max-width:480px">
     <div class="modal-header">
-      <div class="modal-title">Xác nhận đóng gói</div>
+      <div class="modal-title">Confirm Packing</div>
       <button class="modal-close" onclick="closeModal('modal-pack')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="margin-bottom:12px">Đơn: <strong id="pack-order-num"></strong></p>
+      <p style="margin-bottom:12px">Order: <strong id="pack-order-num"></strong></p>
       <div id="pack-checklist" style="margin-bottom:16px"></div>
       <div class="form-group">
-        <label class="form-label">Ghi chú (tùy chọn)</label>
-        <input class="form-control" id="pack-note" placeholder="Ghi chú khi đóng gói..." />
+        <label class="form-label">Note (optional)</label>
+        <input class="form-control" id="pack-note" placeholder="Notes..." />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-pack')">Hủy</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-pack')">Cancel</button>
       <button type="button" class="btn btn-success" id="btn-confirm-pack" onclick="confirmPack()">
-        ✅ Xác nhận đã đóng gói
+        ✅ Confirm Packed
       </button>
     </div>
   </div>
@@ -239,7 +239,7 @@
       container.innerHTML = `
         <div class="empty">
           <div class="empty-icon">🎉</div>
-          <p>${activeFilter === 'all' ? 'Không có đơn hàng nào trong hàng đợi' : 'Không có đơn ở trạng thái này'}</p>
+          <p>${activeFilter === 'all' ? 'No orders in the queue' : 'No orders with this status'}</p>
         </div>`;
       return;
     }
@@ -259,14 +259,14 @@
     ).join('');
 
     let actions = '';
-    const printBtn = `<button class="btn btn-secondary btn-sm" onclick="printLabel('${o._id}')">🖨️ In nhãn</button>`;
+    const printBtn = `<button class="btn btn-secondary btn-sm" onclick="printLabel('${o._id}')">🖨️ Print Label</button>`;
 
     if (o.status === 'pending') {
-      if (isUnassigned)      actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>${printBtn}`;
-      else if (isAssignedToMe) actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>${printBtn}`;
-      else                   actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>${printBtn}`;
+      if (isUnassigned)        actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Claim Order</button>${printBtn}`;
+      else if (isAssignedToMe) actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Mark as Packed</button>${printBtn}`;
+      else                     actions = `<span class="text-muted" style="font-size:12px">Claimed by: ${h(o.assignedPacker?.name)}</span>${printBtn}`;
     } else if (o.status === 'packed') {
-      actions = `${printBtn}<span class="badge badge-blue">Chờ vận chuyển</span>`;
+      actions = `${printBtn}<span class="badge badge-blue">Awaiting Shipment</span>`;
     }
 
     return `
@@ -292,8 +292,8 @@
 
         ${isAssignedToMe || isUnassigned ? `
           <div style="font-size:12px;color:var(--text-muted);margin-top:4px">
-            ${isAssignedToMe ? '👤 Đơn của tôi' : ''}
-            ${isUnassigned && o.status === 'pending' ? '🔓 Chưa ai nhận' : ''}
+            ${isAssignedToMe ? '👤 My Order' : ''}
+            ${isUnassigned && o.status === 'pending' ? '🔓 Unassigned' : ''}
           </div>` : ''}
 
         <div class="order-card-footer">${actions}</div>
@@ -304,7 +304,7 @@
   async function claimOrder(id) {
     try {
       await Orders.claim(id);
-      toast('Đã nhận đơn hàng');
+      toast('Order claimed');
       loadQueue();
     } catch (err) {
       toast(err.message, 'error');
@@ -332,22 +332,22 @@
   async function confirmPack() {
     const checks = document.querySelectorAll('#pack-checklist input[type="checkbox"]');
     if (![...checks].every(c => c.checked)) {
-      toast('Vui lòng kiểm tra tất cả sản phẩm trước khi xác nhận', 'error'); return;
+      toast('Please check all items before confirming', 'error'); return;
     }
 
     const note = document.getElementById('pack-note').value.trim();
     const btn  = document.getElementById('btn-confirm-pack');
-    btn.disabled = true; btn.textContent = 'Đang lưu...';
+    btn.disabled = true; btn.textContent = 'Saving...';
 
     try {
       await Orders.updateStatus(packingOrderId, 'packed', note);
-      toast('Đơn hàng đã được đánh dấu đóng gói xong');
+      toast('Order marked as packed');
       closeModal('modal-pack');
       loadQueue();
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false; btn.textContent = '✅ Xác nhận đã đóng gói';
+      btn.disabled = false; btn.textContent = '✅ Confirm Packed';
     }
   }
 
@@ -360,7 +360,7 @@
     const escHtml = s => String(s ?? '')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    const fmtVND = n => new Intl.NumberFormat('vi-VN').format(n ?? 0) + 'đ';
+    const fmtVND = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(n ?? 0);
 
     const itemRows = o.items.map(i => {
       const subtotal = i.subtotal ?? (i.price * i.quantity);
@@ -372,10 +372,10 @@
     }).join('');
 
     const html = `<!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Nhãn ${escHtml(o.orderNumber)}</title>
+  <title>Label ${escHtml(o.orderNumber)}</title>
   <style>
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family:'Segoe UI',sans-serif; font-size:13px; color:#0f172a; width:10cm; padding:14px; }
@@ -401,28 +401,28 @@
     <div class="brand">📦 WMS</div>
   </div>
   <hr/>
-  <div class="section-title">Giao đến</div>
+  <div class="section-title">Ship To</div>
   <div class="customer-name">${escHtml(o.customer?.name)}</div>
   <div class="customer-phone">${escHtml(o.customer?.phone)}</div>
   <div class="customer-addr">${escHtml(o.customer?.address)}</div>
   <hr/>
-  <div class="section-title">Sản phẩm</div>
+  <div class="section-title">Items</div>
   <table>
     ${itemRows}
     <tr class="total-row">
-      <td colspan="2">Tổng cộng</td>
+      <td colspan="2">Total</td>
       <td style="text-align:right;white-space:nowrap">${fmtVND(o.totalAmount)}</td>
     </tr>
   </table>
   <div class="footer">
-    ${new Date(o.createdAt).toLocaleString('vi-VN')} · WMS Warehouse Management
+    ${new Date(o.createdAt).toLocaleString('en-US')} · WMS Warehouse Management
   </div>
   <script>window.onload = () => { window.print(); }<\/script>
 </body>
 </html>`;
 
     const win = window.open('', '_blank', 'width=440,height=660');
-    if (!win) { toast('Trình duyệt đang chặn popup — cho phép popup để in nhãn', 'error'); return; }
+    if (!win) { toast('Popup blocked — allow popups to print labels', 'error'); return; }
     win.document.write(html);
     win.document.close();
   }

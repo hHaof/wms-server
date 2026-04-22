@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tổng quan — WMS</title>
+  <title>Dashboard — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
@@ -20,19 +20,19 @@
       </div>
       <div>
         <div class="brand-name">WMS</div>
-        <div class="brand-sub">Quản lý kho hàng</div>
+        <div class="brand-sub">Warehouse Management</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-label">Điều hướng</span>
+      <span class="nav-label">Navigation</span>
 
       <a class="nav-link" href="/dashboard.html">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
         </svg>
-        <span>Tổng quan</span>
+        <span>Dashboard</span>
       </a>
 
       <a class="nav-link" href="/inventory.html">
@@ -40,7 +40,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
         </svg>
-        <span>Kho hàng</span>
+        <span>Inventory</span>
       </a>
 
       <a class="nav-link" href="/orders.html">
@@ -48,7 +48,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
         </svg>
-        <span>Đơn hàng</span>
+        <span>Orders</span>
       </a>
 
       <a class="nav-link" href="/packing.html">
@@ -57,7 +57,7 @@
             d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
-        <span>Đóng gói</span>
+        <span>Fulfillment</span>
       </a>
     </nav>
 
@@ -67,7 +67,7 @@
         <div class="sidebar-user-info">
           <div class="sidebar-user-name" id="user-name">...</div>
         </div>
-        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+        <button class="sidebar-logout-btn" onclick="logout()" title="Sign out">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
@@ -80,7 +80,7 @@
   <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
-      <div class="topbar-title">Tổng quan</div>
+      <div class="topbar-title">Dashboard</div>
       <div class="topbar-user">
         <div class="user-avatar" id="topbar-avatar">?</div>
       </div>
@@ -89,29 +89,29 @@
     <main class="content">
       <div class="page-header">
         <div>
-          <div class="page-title">Xin chào, <span id="greeting-name">...</span> 👋</div>
+          <div class="page-title">Welcome, <span id="greeting-name">...</span> 👋</div>
           <div class="page-subtitle" id="greeting-date"></div>
         </div>
       </div>
 
       <div class="stats-grid" id="stats-grid">
-        <div class="loading"><div class="spinner"></div> Đang tải...</div>
+        <div class="loading"><div class="spinner"></div> Loading...</div>
       </div>
 
       <div class="card mt-16">
         <div class="card-header">
-          <div class="card-title">Đơn hàng gần đây</div>
-          <a href="/orders.html" class="btn btn-secondary btn-sm">Xem tất cả</a>
+          <div class="card-title">Recent Orders</div>
+          <a href="/orders.html" class="btn btn-secondary btn-sm">View all</a>
         </div>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Mã đơn</th>
-                <th>Khách hàng</th>
-                <th>Trạng thái</th>
-                <th>Tổng tiền</th>
-                <th>Ngày tạo</th>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Created</th>
               </tr>
             </thead>
             <tbody id="recent-orders">
@@ -138,7 +138,7 @@
     document.getElementById('topbar-avatar').textContent = initials;
   }
   document.getElementById('greeting-date').textContent =
-    new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   async function loadDashboard() {
     try {
@@ -157,9 +157,9 @@
       const shipped  = orders.filter(o => o.status === 'shipped').length;
 
       const subStock = [
-        lowStock > 0 ? `<span class="text-danger">${lowStock} sắp hết</span>` : '',
-        outStock > 0 ? `<span class="text-danger">${outStock} hết hàng</span>` : '',
-      ].filter(Boolean).join(' · ') || '<span class="text-success">Tồn kho ổn định</span>';
+        lowStock > 0 ? `<span class="text-danger">${lowStock} low stock</span>` : '',
+        outStock > 0 ? `<span class="text-danger">${outStock} out of stock</span>` : '',
+      ].filter(Boolean).join(' · ') || '<span class="text-success">Stock levels healthy</span>';
 
       document.getElementById('stats-grid').innerHTML = `
         <div class="stat-card">
@@ -170,7 +170,7 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Sản phẩm</div>
+            <div class="stat-label">Products</div>
             <div class="stat-value">${products.length}</div>
             <div class="stat-sub">${subStock}</div>
           </div>
@@ -184,9 +184,9 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Chờ đóng gói</div>
+            <div class="stat-label">Pending</div>
             <div class="stat-value" style="color:var(--warning)">${pending}</div>
-            <div class="stat-sub">đơn hàng</div>
+            <div class="stat-sub">orders</div>
           </div>
         </div>
 
@@ -198,9 +198,9 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Đã đóng gói</div>
+            <div class="stat-label">Packed</div>
             <div class="stat-value" style="color:#2563eb">${packed}</div>
-            <div class="stat-sub">đơn hàng</div>
+            <div class="stat-sub">orders</div>
           </div>
         </div>
 
@@ -212,9 +212,9 @@
             </svg>
           </div>
           <div class="stat-content">
-            <div class="stat-label">Đã giao</div>
+            <div class="stat-label">Delivered</div>
             <div class="stat-value" style="color:var(--success)">${shipped}</div>
-            <div class="stat-sub">đơn hàng</div>
+            <div class="stat-sub">orders</div>
           </div>
         </div>
       `;
@@ -223,7 +223,7 @@
       const tbody  = document.getElementById('recent-orders');
       const h      = escapeHtml;
       if (!recent.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">📋</div><p>Chưa có đơn hàng nào</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">📋</div><p>No orders yet</p></div></td></tr>`;
       } else {
         tbody.innerHTML = recent.map(o => `
           <tr>

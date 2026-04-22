@@ -1,6 +1,10 @@
 const BASE_URL = 'https://wms-server-production-dc2a.up.railway.app';
 const API_BASE = `${BASE_URL}/api`;
 
+// Set to false to re-enable authentication
+const DEMO_MODE = true;
+const DEMO_USER = { name: 'Demo Admin', email: 'demo@wms.local', role: 'admin', _id: 'demo' };
+
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
 function getToken() { return localStorage.getItem('accessToken'); }
@@ -11,12 +15,16 @@ function getUser() {
 }
 function setUser(u) { localStorage.setItem('user', JSON.stringify(u)); }
 
-// Redirect to login if no token (call at top of every protected page)
 function requireAuth() {
+  if (DEMO_MODE) {
+    if (!getUser()) setUser(DEMO_USER);
+    return;
+  }
   if (!getToken()) { window.location.href = '/login.html'; }
 }
 
 async function logout() {
+  if (DEMO_MODE) { window.location.reload(); return; }
   try {
     await request('POST', '/auth/logout');
   } catch (_) { /* ignore — clear local state regardless */ }
@@ -38,17 +46,18 @@ async function request(method, path, body = null) {
     body: body ? JSON.stringify(body) : null,
   });
 
-  // Auto-logout on auth failure
   if (res.status === 401) {
-    clearToken();
-    window.location.href = '/login.html';
+    if (!DEMO_MODE) {
+      clearToken();
+      window.location.href = '/login.html';
+    }
     return;
   }
 
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    const msg = data.message || `Lỗi ${res.status}`;
+    const msg = data.message || `Error ${res.status}`;
     throw new Error(msg);
   }
 
@@ -118,30 +127,28 @@ function toast(message, type = 'success') {
 function showModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Close modal when clicking backdrop
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal')) e.target.classList.remove('open');
 });
 
 function statusBadge(status) {
   const map = {
-    pending: ['badge-yellow', 'Chờ đóng gói'],
-    packed:  ['badge-blue',   'Đã đóng gói'],
-    shipped: ['badge-green',  'Đã giao'],
+    pending: ['badge-yellow', 'Pending'],
+    packed:  ['badge-blue',   'Packed'],
+    shipped: ['badge-green',  'Shipped'],
   };
   const [cls, label] = map[status] || ['badge-grey', status];
   return `<span class="badge ${cls}">${label}</span>`;
 }
 
 function formatCurrency(n) {
-  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(n);
 }
 
 function formatDate(d) {
-  return new Date(d).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'short' });
+  return new Date(d).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
 }
 
-// Highlight active sidebar link based on current page
 function markActiveNav() {
   const page = location.pathname.split('/').pop();
   document.querySelectorAll('.nav-link').forEach((a) => {
@@ -149,7 +156,6 @@ function markActiveNav() {
   });
 }
 
-// Render logged-in user name in topbar
 function renderUser() {
   const u = getUser();
   const el = document.getElementById('user-name');

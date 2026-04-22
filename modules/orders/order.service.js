@@ -29,7 +29,7 @@ const deductStock = async (items) => {
     );
     if (!product) {
       await restoreStock(deducted);
-      throw createError(`Sản phẩm "${item.name}" không đủ tồn kho`, 400);
+      throw createError(`Insufficient stock for "${item.name}"`, 400);
     }
     deducted.push({ product: item.product, quantity: item.quantity });
   }
@@ -50,7 +50,7 @@ const createOrder = async ({ customer, items, note }, userId) => {
   const products = await Product.find({ _id: { $in: productIds }, isActive: true });
 
   if (products.length !== productIds.length) {
-    throw createError('Một hoặc nhiều sản phẩm không tồn tại hoặc đã bị vô hiệu hóa', 400);
+    throw createError('One or more products do not exist or are disabled', 400);
   }
 
   const productMap = Object.fromEntries(products.map((p) => [p._id.toString(), p]));
@@ -87,7 +87,6 @@ const createOrder = async ({ customer, items, note }, userId) => {
     } catch (err) {
       const isCollision = err.code === 11000 && err.keyPattern?.orderNumber;
       if (isCollision && attempt < 2) continue;
-      // Non-collision error or last attempt — restore stock and rethrow
       await restoreStock(orderItems.map((i) => ({ product: i.product, quantity: i.quantity })));
       throw err;
     }
@@ -99,7 +98,6 @@ const getOrders = async ({ page = 1, limit = 20, status, assignedPacker, search 
   if (status) filter.status = status;
   if (assignedPacker) filter.assignedPacker = assignedPacker;
   if (search) {
-    // Escape regex metacharacters to prevent ReDoS
     const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     filter.orderNumber = { $regex: escaped, $options: 'i' };
   }
@@ -128,17 +126,17 @@ const getOrderById = async (id) => {
     .populate('createdBy', 'name email')
     .populate('assignedPacker', 'name email')
     .populate('items.product', 'sku name unit');
-  if (!order) throw createError('Không tìm thấy đơn hàng', 404);
+  if (!order) throw createError('Order not found', 404);
   return order;
 };
 
 const updateStatus = async (id, newStatus, userId, note) => {
   const order = await Order.findById(id);
-  if (!order) throw createError('Không tìm thấy đơn hàng', 404);
+  if (!order) throw createError('Order not found', 404);
 
   const allowed = STATUS_TRANSITIONS[order.status];
   if (!allowed.includes(newStatus)) {
-    throw createError(`Không thể chuyển từ "${order.status}" sang "${newStatus}"`, 400);
+    throw createError(`Cannot transition from "${order.status}" to "${newStatus}"`, 400);
   }
 
   order.status = newStatus;
@@ -168,7 +166,7 @@ const claimOrder = async (id, packerId) => {
     { assignedPacker: packerId },
     { new: true }
   );
-  if (!order) throw createError('Đơn hàng không tồn tại, đã được nhận hoặc không ở trạng thái pending', 400);
+  if (!order) throw createError('Order not found, already claimed, or not in pending status', 400);
   return order;
 };
 

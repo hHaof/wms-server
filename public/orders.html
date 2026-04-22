@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đơn hàng — WMS</title>
+  <title>Orders — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
   <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </head>
@@ -21,19 +21,19 @@
       </div>
       <div>
         <div class="brand-name">WMS</div>
-        <div class="brand-sub">Quản lý kho hàng</div>
+        <div class="brand-sub">Warehouse Management</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-label">Điều hướng</span>
+      <span class="nav-label">Navigation</span>
 
       <a class="nav-link" href="/dashboard.html">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
         </svg>
-        <span>Tổng quan</span>
+        <span>Dashboard</span>
       </a>
 
       <a class="nav-link" href="/inventory.html">
@@ -41,7 +41,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
         </svg>
-        <span>Kho hàng</span>
+        <span>Inventory</span>
       </a>
 
       <a class="nav-link" href="/orders.html">
@@ -49,7 +49,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
         </svg>
-        <span>Đơn hàng</span>
+        <span>Orders</span>
       </a>
 
       <a class="nav-link" href="/packing.html">
@@ -58,7 +58,7 @@
             d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
-        <span>Đóng gói</span>
+        <span>Fulfillment</span>
       </a>
     </nav>
 
@@ -68,7 +68,7 @@
         <div class="sidebar-user-info">
           <div class="sidebar-user-name" id="user-name">...</div>
         </div>
-        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+        <button class="sidebar-logout-btn" onclick="logout()" title="Sign out">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
@@ -81,7 +81,7 @@
   <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
-      <div class="topbar-title">Đơn hàng</div>
+      <div class="topbar-title">Orders</div>
       <div class="topbar-user">
         <div class="user-avatar" id="topbar-avatar">?</div>
       </div>
@@ -90,42 +90,42 @@
     <main class="content">
       <div class="page-header">
         <div>
-          <div class="page-title">Danh sách đơn hàng</div>
-          <div class="page-subtitle">Quản lý và theo dõi trạng thái đơn hàng</div>
+          <div class="page-title">Orders</div>
+          <div class="page-subtitle">Manage and track order fulfillment</div>
         </div>
         <div class="gap-row">
-          <button class="btn btn-secondary" id="btn-export" onclick="exportExcel()">Xuất Excel</button>
-          <button class="btn btn-primary" onclick="showModal('modal-create')">+ Tạo đơn</button>
+          <button class="btn btn-secondary" id="btn-export" onclick="exportExcel()">Export Excel</button>
+          <button class="btn btn-primary" onclick="showModal('modal-create')">+ New Order</button>
         </div>
       </div>
 
       <div class="card">
         <div class="toolbar">
-          <input class="form-control toolbar-search" id="search-input" placeholder="Tìm mã đơn hàng, tên khách..." />
+          <input class="form-control toolbar-search" id="search-input" placeholder="Search order number, customer..." />
           <select class="form-control" id="status-filter" style="width:160px" onchange="loadOrders(1)">
-            <option value="">Tất cả trạng thái</option>
-            <option value="pending">Chờ đóng gói</option>
-            <option value="packed">Đã đóng gói</option>
-            <option value="shipped">Đã giao</option>
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="packed">Packed</option>
+            <option value="shipped">Shipped</option>
           </select>
-          <button class="btn btn-secondary" onclick="loadOrders(1)">Lọc</button>
+          <button class="btn btn-secondary" onclick="loadOrders(1)">Filter</button>
         </div>
 
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Mã đơn</th>
-                <th>Khách hàng</th>
-                <th>Sản phẩm</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Ngày tạo</th>
-                <th class="text-right">Thao tác</th>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="order-table">
-              <tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>
+              <tr><td colspan="7"><div class="loading"><div class="spinner"></div> Loading...</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -139,40 +139,40 @@
 <div class="modal" id="modal-create">
   <div class="modal-box" style="max-width:580px">
     <div class="modal-header">
-      <div class="modal-title">Tạo đơn hàng mới</div>
+      <div class="modal-title">New Order</div>
       <button class="modal-close" onclick="closeModal('modal-create')">✕</button>
     </div>
     <div class="modal-body">
-      <p class="fw-600" style="margin-bottom:12px">Thông tin khách hàng</p>
+      <p class="fw-600" style="margin-bottom:12px">Customer Info</p>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Tên khách hàng *</label>
-          <input class="form-control" id="c-name" required placeholder="Nguyễn Văn A" />
+          <label class="form-label">Customer Name *</label>
+          <input class="form-control" id="c-name" required placeholder="John Smith" />
         </div>
         <div class="form-group">
-          <label class="form-label">Số điện thoại *</label>
+          <label class="form-label">Phone *</label>
           <input class="form-control" id="c-phone" required placeholder="0901234567" />
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Địa chỉ giao hàng *</label>
-        <input class="form-control" id="c-address" required placeholder="123 Đường ABC, Quận 1, TP.HCM" />
+        <label class="form-label">Delivery Address *</label>
+        <input class="form-control" id="c-address" required placeholder="123 Main St, District 1" />
       </div>
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px">
-        <p class="fw-600">Sản phẩm</p>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()">+ Thêm dòng</button>
+        <p class="fw-600">Items</p>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()">+ Add Item</button>
       </div>
       <div id="items-container"></div>
 
       <div class="form-group" style="margin-top:12px">
-        <label class="form-label">Ghi chú</label>
-        <textarea class="form-control" id="order-note" rows="2" placeholder="Ghi chú thêm..."></textarea>
+        <label class="form-label">Note</label>
+        <textarea class="form-control" id="order-note" rows="2" placeholder="Additional notes..."></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-create')">Hủy</button>
-      <button type="button" class="btn btn-primary" id="btn-create" onclick="submitCreate()">Tạo đơn hàng</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-create')">Cancel</button>
+      <button type="button" class="btn btn-primary" id="btn-create" onclick="submitCreate()">Create Order</button>
     </div>
   </div>
 </div>
@@ -181,26 +181,26 @@
 <div class="modal" id="modal-status">
   <div class="modal-box" style="max-width:400px">
     <div class="modal-header">
-      <div class="modal-title">Cập nhật trạng thái</div>
+      <div class="modal-title">Update Status</div>
       <button class="modal-close" onclick="closeModal('modal-status')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="margin-bottom:12px">Đơn hàng: <strong id="status-order-num"></strong></p>
+      <p style="margin-bottom:12px">Order: <strong id="status-order-num"></strong></p>
       <div class="form-group">
-        <label class="form-label">Trạng thái mới</label>
+        <label class="form-label">New Status</label>
         <select class="form-control" id="new-status">
-          <option value="packed">Đã đóng gói</option>
-          <option value="shipped">Đã giao</option>
+          <option value="packed">Packed</option>
+          <option value="shipped">Shipped</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Ghi chú (tùy chọn)</label>
-        <input class="form-control" id="status-note" placeholder="Ghi chú..." />
+        <label class="form-label">Note (optional)</label>
+        <input class="form-control" id="status-note" placeholder="Notes..." />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-status')">Hủy</button>
-      <button type="button" class="btn btn-primary" onclick="submitStatus()">Cập nhật</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-status')">Cancel</button>
+      <button type="button" class="btn btn-primary" onclick="submitStatus()">Update</button>
     </div>
   </div>
 </div>
@@ -209,7 +209,7 @@
 <div class="modal" id="modal-detail">
   <div class="modal-box" style="max-width:560px">
     <div class="modal-header">
-      <div class="modal-title" id="detail-title">Chi tiết đơn hàng</div>
+      <div class="modal-title" id="detail-title">Order Details</div>
       <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
     </div>
     <div class="modal-body" id="detail-body">
@@ -250,7 +250,7 @@
     const status = document.getElementById('status-filter').value;
 
     document.getElementById('order-table').innerHTML =
-      `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>`;
+      `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Loading...</div></td></tr>`;
 
     try {
       const params = { page, limit: 15 };
@@ -269,7 +269,7 @@
     const tbody = document.getElementById('order-table');
     if (!orders.length) {
       tbody.innerHTML = `<tr><td colspan="7">
-        <div class="empty"><div class="empty-icon">📋</div><p>Không có đơn hàng nào</p></div>
+        <div class="empty"><div class="empty-icon">📋</div><p>No orders found</p></div>
       </td></tr>`;
       return;
     }
@@ -281,15 +281,15 @@
           <div class="fw-600">${h(o.customer.name)}</div>
           <div class="text-muted" style="font-size:12px">${h(o.customer.phone)}</div>
         </td>
-        <td class="text-muted">${o.items.length} sản phẩm</td>
+        <td class="text-muted">${o.items.length} item${o.items.length !== 1 ? 's' : ''}</td>
         <td class="fw-600">${formatCurrency(o.totalAmount)}</td>
         <td>${statusBadge(o.status)}</td>
         <td class="text-muted" style="font-size:12.5px">${formatDate(o.createdAt)}</td>
         <td class="text-right">
           <div class="gap-row" style="justify-content:flex-end">
-            <button class="btn btn-secondary btn-xs" onclick="viewDetail('${o._id}')">Chi tiết</button>
+            <button class="btn btn-secondary btn-xs" onclick="viewDetail('${o._id}')">Details</button>
             ${o.status !== 'shipped'
-              ? `<button class="btn btn-primary btn-xs" onclick="openStatusModal('${o._id}')">Cập nhật</button>`
+              ? `<button class="btn btn-primary btn-xs" onclick="openStatusModal('${o._id}')">Update</button>`
               : ''}
           </div>
         </td>
@@ -315,7 +315,7 @@
     const id = Date.now();
     itemRows.push(id);
     const options = allProducts.map(p =>
-      `<option value="${p._id}">${p.name} (${p.sku}) — tồn: ${p.stock}</option>`
+      `<option value="${p._id}">${p.name} (${p.sku}) — stock: ${p.stock}</option>`
     ).join('');
 
     const el = document.createElement('div');
@@ -323,7 +323,7 @@
     el.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px';
     el.innerHTML = `
       <select class="form-control" style="flex:2" data-field="product">
-        <option value="">-- Chọn sản phẩm --</option>
+        <option value="">-- Select product --</option>
         ${options}
       </select>
       <input class="form-control" type="number" min="1" value="1" style="width:80px" data-field="quantity" />
@@ -344,7 +344,7 @@
     const note    = document.getElementById('order-note').value.trim();
 
     if (!name || !phone || !address) {
-      toast('Vui lòng điền đầy đủ thông tin khách hàng', 'error'); return;
+      toast('Please fill in all customer info', 'error'); return;
     }
 
     const items = [];
@@ -353,17 +353,17 @@
       if (!row) continue;
       const product  = row.querySelector('[data-field="product"]').value;
       const quantity = parseInt(row.querySelector('[data-field="quantity"]').value, 10);
-      if (!product)  { toast('Vui lòng chọn sản phẩm cho tất cả dòng', 'error'); return; }
-      if (!quantity || quantity < 1) { toast('Số lượng phải ít nhất là 1', 'error'); return; }
+      if (!product)  { toast('Please select a product for all rows', 'error'); return; }
+      if (!quantity || quantity < 1) { toast('Quantity must be at least 1', 'error'); return; }
       items.push({ product, quantity });
     }
-    if (!items.length) { toast('Đơn hàng cần ít nhất 1 sản phẩm', 'error'); return; }
+    if (!items.length) { toast('Order needs at least 1 item', 'error'); return; }
 
     const btn = document.getElementById('btn-create');
-    btn.disabled = true; btn.textContent = 'Đang tạo...';
+    btn.disabled = true; btn.textContent = 'Creating...';
     try {
       await Orders.create({ customer: { name, phone, address }, items, note });
-      toast('Tạo đơn hàng thành công');
+      toast('Order created successfully');
       ['c-name','c-phone','c-address','order-note'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('items-container').innerHTML = '';
       itemRows = [];
@@ -372,7 +372,7 @@
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false; btn.textContent = 'Tạo đơn hàng';
+      btn.disabled = false; btn.textContent = 'Create Order';
     }
   }
 
@@ -387,8 +387,8 @@
 
     const sel = document.getElementById('new-status');
     sel.innerHTML = '';
-    if (o.status === 'pending') sel.add(new Option('Đã đóng gói', 'packed'));
-    if (o.status === 'packed')  sel.add(new Option('Đã giao',     'shipped'));
+    if (o.status === 'pending') sel.add(new Option('Packed', 'packed'));
+    if (o.status === 'packed')  sel.add(new Option('Shipped', 'shipped'));
     showModal('modal-status');
   }
 
@@ -397,7 +397,7 @@
     const note   = document.getElementById('status-note').value.trim();
     try {
       await Orders.updateStatus(selectedOrderId, status, note);
-      toast('Cập nhật trạng thái thành công');
+      toast('Status updated successfully');
       closeModal('modal-status');
       loadOrders(currentPage);
     } catch (err) {
@@ -416,23 +416,23 @@
       document.getElementById('detail-body').innerHTML = `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
           <div>
-            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Khách hàng</div>
+            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Customer</div>
             <div class="fw-600">${h(o.customer.name)}</div>
             <div style="margin-top:2px">${h(o.customer.phone)}</div>
             <div class="text-muted" style="font-size:13px;margin-top:2px">${h(o.customer.address)}</div>
           </div>
           <div>
-            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Trạng thái</div>
+            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Status</div>
             <div>${statusBadge(o.status)}</div>
             <div class="text-muted" style="font-size:12px;margin-top:6px">${formatDate(o.createdAt)}</div>
           </div>
         </div>
         <table style="width:100%;margin-bottom:16px">
           <thead><tr>
-            <th>Sản phẩm</th><th>SKU</th>
-            <th class="text-right">SL</th>
-            <th class="text-right">Đơn giá</th>
-            <th class="text-right">Thành tiền</th>
+            <th>Item</th><th>SKU</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit Price</th>
+            <th class="text-right">Subtotal</th>
           </tr></thead>
           <tbody>
             ${o.items.map(i => `<tr>
@@ -444,13 +444,13 @@
             </tr>`).join('')}
           </tbody>
           <tfoot><tr style="border-top:2px solid var(--border)">
-            <td colspan="4" class="text-right fw-600" style="padding:10px 16px">Tổng cộng</td>
+            <td colspan="4" class="text-right fw-600" style="padding:10px 16px">Total</td>
             <td class="text-right fw-600" style="padding:10px 16px;font-size:15px">${formatCurrency(o.totalAmount)}</td>
           </tr></tfoot>
         </table>
         ${o.note ? `<div class="text-muted" style="font-size:13px;margin-bottom:12px">📝 ${h(o.note)}</div>` : ''}
         <div>
-          <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Lịch sử trạng thái</div>
+          <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Status History</div>
           ${o.statusHistory.map(entry => `
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0">
               ${statusBadge(entry.status)}
@@ -473,7 +473,7 @@
 
   async function exportExcel() {
     const btn = document.getElementById('btn-export');
-    btn.disabled = true; btn.textContent = 'Đang xuất...';
+    btn.disabled = true; btn.textContent = 'Exporting...';
     try {
       const search = document.getElementById('search-input').value.trim();
       const status = document.getElementById('status-filter').value;
@@ -489,28 +489,28 @@
         page++;
       } while (page <= totalPages);
 
-      const statusLabel = { pending: 'Chờ đóng gói', packed: 'Đã đóng gói', shipped: 'Đã giao' };
+      const statusLabel = { pending: 'Pending', packed: 'Packed', shipped: 'Shipped' };
       const rows = all.map(o => ({
-        'Mã đơn':     o.orderNumber,
-        'Khách hàng': o.customer.name,
-        'SĐT':        o.customer.phone,
-        'Địa chỉ':    o.customer.address,
-        'Sản phẩm':   o.items.map(i => `${i.name} x${i.quantity}`).join('; '),
-        'Tổng tiền':  o.totalAmount,
-        'Trạng thái': statusLabel[o.status] || o.status,
-        'Ngày tạo':   new Date(o.createdAt).toLocaleString('vi-VN'),
+        'Order #':   o.orderNumber,
+        'Customer':  o.customer.name,
+        'Phone':     o.customer.phone,
+        'Address':   o.customer.address,
+        'Items':     o.items.map(i => `${i.name} x${i.quantity}`).join('; '),
+        'Total':     o.totalAmount,
+        'Status':    statusLabel[o.status] || o.status,
+        'Created':   new Date(o.createdAt).toLocaleString('en-US'),
       }));
 
       const ws = XLSX.utils.json_to_sheet(rows);
       ws['!cols'] = [16,20,14,40,60,14,16,18].map(w => ({ wch: w }));
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Đơn hàng');
-      XLSX.writeFile(wb, `don-hang-${new Date().toISOString().slice(0,10)}.xlsx`);
-      toast(`Đã xuất ${rows.length} đơn hàng`);
+      XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+      XLSX.writeFile(wb, `orders-${new Date().toISOString().slice(0,10)}.xlsx`);
+      toast(`Exported ${rows.length} orders`);
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false; btn.textContent = 'Xuất Excel';
+      btn.disabled = false; btn.textContent = 'Export Excel';
     }
   }
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kho hàng — WMS</title>
+  <title>Inventory — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
@@ -20,19 +20,19 @@
       </div>
       <div>
         <div class="brand-name">WMS</div>
-        <div class="brand-sub">Quản lý kho hàng</div>
+        <div class="brand-sub">Warehouse Management</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <span class="nav-label">Điều hướng</span>
+      <span class="nav-label">Navigation</span>
 
       <a class="nav-link" href="/dashboard.html">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
         </svg>
-        <span>Tổng quan</span>
+        <span>Dashboard</span>
       </a>
 
       <a class="nav-link" href="/inventory.html">
@@ -40,7 +40,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
         </svg>
-        <span>Kho hàng</span>
+        <span>Inventory</span>
       </a>
 
       <a class="nav-link" href="/orders.html">
@@ -48,7 +48,7 @@
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
         </svg>
-        <span>Đơn hàng</span>
+        <span>Orders</span>
       </a>
 
       <a class="nav-link" href="/packing.html">
@@ -57,7 +57,7 @@
             d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
         </svg>
-        <span>Đóng gói</span>
+        <span>Fulfillment</span>
       </a>
     </nav>
 
@@ -67,7 +67,7 @@
         <div class="sidebar-user-info">
           <div class="sidebar-user-name" id="user-name">...</div>
         </div>
-        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+        <button class="sidebar-logout-btn" onclick="logout()" title="Sign out">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
@@ -80,7 +80,7 @@
   <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
-      <div class="topbar-title">Kho hàng</div>
+      <div class="topbar-title">Inventory</div>
       <div class="topbar-user">
         <div class="user-avatar" id="topbar-avatar">?</div>
       </div>
@@ -89,39 +89,39 @@
     <main class="content">
       <div class="page-header">
         <div>
-          <div class="page-title">Sản phẩm</div>
-          <div class="page-subtitle">Quản lý tồn kho và thông tin sản phẩm</div>
+          <div class="page-title">Products</div>
+          <div class="page-subtitle">Manage stock levels and product catalog</div>
         </div>
-        <button class="btn btn-primary" onclick="showModal('modal-add')">+ Thêm sản phẩm</button>
+        <button class="btn btn-primary" onclick="showModal('modal-add')">+ Add Product</button>
       </div>
 
       <!-- Orange banner: low stock (above 0 but below threshold) -->
       <div class="alert-banner" id="low-stock-banner" style="display:none">
         <span>⚠️</span>
-        <span><strong id="low-stock-count">0</strong> sản phẩm sắp hết hàng</span>
-        <button class="btn btn-secondary btn-xs" onclick="filterByStock('low')">Lọc ngay</button>
+        <span><strong id="low-stock-count">0</strong> products running low</span>
+        <button class="btn btn-secondary btn-xs" onclick="filterByStock('low')">Filter now</button>
         <button class="alert-close" onclick="this.parentElement.style.display='none'">✕</button>
       </div>
       <!-- Red banner: out of stock (quantity = 0) -->
       <div class="alert-banner alert-banner-danger" id="out-stock-banner" style="display:none">
         <span>❌</span>
-        <span><strong id="out-stock-count">0</strong> sản phẩm đã hết hàng</span>
-        <button class="btn btn-secondary btn-xs" onclick="filterByStock('out')">Lọc ngay</button>
+        <span><strong id="out-stock-count">0</strong> products out of stock</span>
+        <button class="btn btn-secondary btn-xs" onclick="filterByStock('out')">Filter now</button>
         <button class="alert-close" onclick="this.parentElement.style.display='none'">✕</button>
       </div>
 
       <div class="card">
         <div class="toolbar">
-          <input class="form-control toolbar-search" id="search-input" type="text" placeholder="Tìm theo tên, SKU..." />
+          <input class="form-control toolbar-search" id="search-input" type="text" placeholder="Search by name, SKU..." />
           <select class="form-control" id="category-filter" style="width:150px">
-            <option value="">Tất cả danh mục</option>
+            <option value="">All categories</option>
           </select>
           <select class="form-control" id="stock-filter" style="width:160px" onchange="loadProducts(1)">
-            <option value="">Tất cả tồn kho</option>
-            <option value="low">⚠️ Sắp hết hàng</option>
-            <option value="out">❌ Hết hàng (0)</option>
+            <option value="">All stock levels</option>
+            <option value="low">⚠️ Low Stock</option>
+            <option value="out">❌ Out of Stock</option>
           </select>
-          <button class="btn btn-secondary" onclick="loadProducts(1)">Lọc</button>
+          <button class="btn btn-secondary" onclick="loadProducts(1)">Filter</button>
         </div>
 
         <div class="table-wrap">
@@ -129,16 +129,16 @@
             <thead>
               <tr>
                 <th>SKU</th>
-                <th>Sản phẩm</th>
-                <th>Danh mục</th>
-                <th>Giá</th>
-                <th>Tồn kho</th>
-                <th>Trạng thái</th>
-                <th class="text-right">Thao tác</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="product-table">
-              <tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>
+              <tr><td colspan="7"><div class="loading"><div class="spinner"></div> Loading...</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -152,15 +152,15 @@
 <div class="modal" id="modal-add">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">Thêm sản phẩm</div>
+      <div class="modal-title">Add Product</div>
       <button class="modal-close" onclick="closeModal('modal-add')">✕</button>
     </div>
     <form id="form-add" onsubmit="submitAdd(event)">
       <div class="modal-body">
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Tên sản phẩm *</label>
-            <input class="form-control" name="name" required placeholder="Tên sản phẩm" />
+            <label class="form-label">Product Name *</label>
+            <input class="form-control" name="name" required placeholder="Product name" />
           </div>
           <div class="form-group">
             <label class="form-label">SKU *</label>
@@ -169,38 +169,38 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Danh mục *</label>
-            <input class="form-control" name="category" required placeholder="Điện tử, Thực phẩm..." />
+            <label class="form-label">Category *</label>
+            <input class="form-control" name="category" required placeholder="Electronics, Food..." />
           </div>
           <div class="form-group">
-            <label class="form-label">Đơn vị</label>
+            <label class="form-label">Unit</label>
             <select class="form-control" name="unit">
-              <option value="piece">Cái</option>
+              <option value="piece">Piece</option>
               <option value="kg">Kg</option>
-              <option value="box">Hộp</option>
-              <option value="liter">Lít</option>
-              <option value="meter">Mét</option>
+              <option value="box">Box</option>
+              <option value="liter">Liter</option>
+              <option value="meter">Meter</option>
             </select>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Giá (VND) *</label>
+            <label class="form-label">Price (VND) *</label>
             <input class="form-control" name="price" type="number" min="0" required placeholder="0" />
           </div>
           <div class="form-group">
-            <label class="form-label">Tồn kho ban đầu</label>
+            <label class="form-label">Initial Stock</label>
             <input class="form-control" name="stock" type="number" min="0" value="0" />
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Mô tả</label>
-          <textarea class="form-control" name="description" rows="2" placeholder="Mô tả sản phẩm..."></textarea>
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="2" placeholder="Product description..."></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add')">Hủy</button>
-        <button type="submit" class="btn btn-primary" id="btn-add">Thêm sản phẩm</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btn-add">Add Product</button>
       </div>
     </form>
   </div>
@@ -210,20 +210,20 @@
 <div class="modal" id="modal-stock">
   <div class="modal-box" style="max-width:380px">
     <div class="modal-header">
-      <div class="modal-title">Cập nhật tồn kho</div>
+      <div class="modal-title">Update Stock</div>
       <button class="modal-close" onclick="closeModal('modal-stock')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="margin-bottom:12px">Sản phẩm: <strong id="stock-product-name"></strong></p>
-      <p style="margin-bottom:16px">Tồn kho hiện tại: <strong id="stock-current"></strong></p>
+      <p style="margin-bottom:12px">Product: <strong id="stock-product-name"></strong></p>
+      <p style="margin-bottom:16px">Current Stock: <strong id="stock-current"></strong></p>
       <div class="form-group">
-        <label class="form-label">Điều chỉnh (+ nhập kho, − xuất kho)</label>
-        <input class="form-control" id="stock-adjustment" type="number" placeholder="Ví dụ: 50 hoặc -10" />
+        <label class="form-label">Adjustment (+ restock, − dispatch)</label>
+        <input class="form-control" id="stock-adjustment" type="number" placeholder="e.g. 50 or -10" />
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-stock')">Hủy</button>
-      <button type="button" class="btn btn-primary" onclick="submitStock()">Cập nhật</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('modal-stock')">Cancel</button>
+      <button type="button" class="btn btn-primary" onclick="submitStock()">Update</button>
     </div>
   </div>
 </div>
@@ -245,7 +245,7 @@
   let currentPage = 1;
   let selectedProductId = null;
   const productCache = new Map();
-  const UNIT_LABEL = { piece: 'cái', kg: 'kg', box: 'hộp', liter: 'lít', meter: 'mét' };
+  const UNIT_LABEL = { piece: 'pc', kg: 'kg', box: 'box', liter: 'L', meter: 'm' };
 
   async function loadProducts(page = 1) {
     currentPage = page;
@@ -254,7 +254,7 @@
     const stockStatus = document.getElementById('stock-filter').value;
 
     document.getElementById('product-table').innerHTML =
-      `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Đang tải...</div></td></tr>`;
+      `<tr><td colspan="7"><div class="loading"><div class="spinner"></div> Loading...</div></td></tr>`;
 
     try {
       const params = { page, limit: 15 };
@@ -275,7 +275,7 @@
     const tbody = document.getElementById('product-table');
     if (!products.length) {
       tbody.innerHTML = `<tr><td colspan="7">
-        <div class="empty"><div class="empty-icon">📦</div><p>Không có sản phẩm nào</p></div>
+        <div class="empty"><div class="empty-icon">📦</div><p>No products found</p></div>
       </td></tr>`;
       return;
     }
@@ -286,8 +286,8 @@
       const unitLabel = UNIT_LABEL[p.unit] || p.unit || '';
 
       let stockBadge = '';
-      if (isOut)      stockBadge = '<span class="badge badge-red" style="margin-left:4px">Hết hàng</span>';
-      else if (isLow) stockBadge = '<span class="badge badge-orange" style="margin-left:4px">Sắp hết</span>';
+      if (isOut)      stockBadge = '<span class="badge badge-red" style="margin-left:4px">Out of Stock</span>';
+      else if (isLow) stockBadge = '<span class="badge badge-orange" style="margin-left:4px">Low Stock</span>';
 
       return `
         <tr>
@@ -303,11 +303,11 @@
             ${stockBadge}
           </td>
           <td>${p.isActive
-            ? '<span class="badge badge-green">Hoạt động</span>'
-            : '<span class="badge badge-grey">Vô hiệu</span>'}</td>
+            ? '<span class="badge badge-green">Active</span>'
+            : '<span class="badge badge-grey">Inactive</span>'}</td>
           <td class="text-right" style="white-space:nowrap">
-            <button class="btn btn-secondary btn-xs" onclick="openStockModal('${p._id}')">Tồn kho</button>
-            <button class="btn btn-danger btn-xs" onclick="deleteProduct('${p._id}')" style="margin-left:4px">Xóa</button>
+            <button class="btn btn-secondary btn-xs" onclick="openStockModal('${p._id}')">Stock</button>
+            <button class="btn btn-danger btn-xs" onclick="deleteProduct('${p._id}')" style="margin-left:4px">Delete</button>
           </td>
         </tr>
       `;
@@ -343,17 +343,17 @@
     data.price = Number(data.price);
     data.stock = Number(data.stock);
 
-    btn.disabled = true; btn.textContent = 'Đang lưu...';
+    btn.disabled = true; btn.textContent = 'Saving...';
     try {
       await Products.create(data);
-      toast('Đã thêm sản phẩm thành công');
+      toast('Product added successfully');
       form.reset();
       closeModal('modal-add');
       loadProducts(currentPage);
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false; btn.textContent = 'Thêm sản phẩm';
+      btn.disabled = false; btn.textContent = 'Add Product';
     }
   }
 
@@ -369,10 +369,10 @@
 
   async function submitStock() {
     const adj = parseInt(document.getElementById('stock-adjustment').value, 10);
-    if (!adj || isNaN(adj)) { toast('Nhập số điều chỉnh hợp lệ', 'error'); return; }
+    if (!adj || isNaN(adj)) { toast('Enter a valid adjustment value', 'error'); return; }
     try {
       await Products.updateStock(selectedProductId, adj);
-      toast('Cập nhật tồn kho thành công');
+      toast('Stock updated successfully');
       closeModal('modal-stock');
       loadProducts(currentPage);
     } catch (err) {
@@ -383,10 +383,10 @@
   async function deleteProduct(id) {
     const p = productCache.get(id);
     if (!p) return;
-    if (!confirm(`Xóa sản phẩm "${p.name}"?\nHành động này không thể hoàn tác.`)) return;
+    if (!confirm(`Delete "${p.name}"?\nThis action cannot be undone.`)) return;
     try {
       await Products.remove(id);
-      toast('Đã xóa sản phẩm');
+      toast('Product deleted');
       productCache.delete(id);
       loadProducts(currentPage);
     } catch (err) {

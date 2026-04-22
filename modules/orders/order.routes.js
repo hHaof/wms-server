@@ -7,20 +7,20 @@ const router = Router();
 
 router.use(verifyToken);
 
-const idRule = param('id').isMongoId().withMessage('ID không hợp lệ');
+const idRule = param('id').isMongoId().withMessage('Invalid ID');
 
 const createRules = [
-  body('customer.name').trim().notEmpty().withMessage('Tên khách hàng không được để trống'),
+  body('customer.name').trim().notEmpty().withMessage('Customer name is required'),
   body('customer.phone')
     .trim()
     .notEmpty()
-    .withMessage('Số điện thoại không được để trống')
+    .withMessage('Phone number is required')
     .matches(/^[0-9+\-\s]{7,15}$/)
-    .withMessage('Số điện thoại không hợp lệ'),
-  body('customer.address').trim().notEmpty().withMessage('Địa chỉ không được để trống'),
-  body('items').isArray({ min: 1 }).withMessage('Đơn hàng cần ít nhất 1 sản phẩm'),
-  body('items.*.product').isMongoId().withMessage('Product ID không hợp lệ'),
-  body('items.*.quantity').isInt({ min: 1 }).withMessage('Số lượng phải ít nhất là 1'),
+    .withMessage('Invalid phone number'),
+  body('customer.address').trim().notEmpty().withMessage('Delivery address is required'),
+  body('items').isArray({ min: 1 }).withMessage('Order must have at least 1 item'),
+  body('items.*.product').isMongoId().withMessage('Invalid product ID'),
+  body('items.*.quantity').isInt({ min: 1 }).withMessage('Quantity must be at least 1'),
   body('note').optional().trim().isLength({ max: 500 }),
 ];
 
@@ -28,14 +28,11 @@ const statusRules = [
   idRule,
   body('status')
     .isIn(['packed', 'shipped'])
-    .withMessage('Trạng thái hợp lệ: packed, shipped'),
+    .withMessage('Valid statuses: packed, shipped'),
   body('note').optional().trim().isLength({ max: 500 }),
 ];
 
-// Packing queue — for packers and warehouse staff
 router.get('/packing', requireRole('admin', 'warehouse', 'packer'), orderController.getPackingQueue);
-
-// Claim an unassigned pending order (packer assigns themselves)
 router.patch('/:id/claim', idRule, requireRole('packer', 'warehouse', 'admin'), orderController.claimOrder);
 
 router.get('/', orderController.getOrders);

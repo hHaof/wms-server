@@ -42,7 +42,7 @@ app.use(
     max: 100,
     standardHeaders: true,
     legacyHeaders: false,
-    message: { message: 'Quá nhiều request, thử lại sau' },
+    message: { message: 'Too many requests, please try again later' },
   })
 );
 

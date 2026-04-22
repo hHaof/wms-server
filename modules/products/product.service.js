@@ -42,7 +42,7 @@ const getProducts = async ({ page = 1, limit = 20, category, search, isActive, s
 
 const getProductById = async (id) => {
   const product = await Product.findById(id).populate('createdBy', 'name email');
-  if (!product) throw createError('Không tìm thấy sản phẩm', 404);
+  if (!product) throw createError('Product not found', 404);
   return product;
 };
 
@@ -52,14 +52,13 @@ const createProduct = async (data, userId) => {
 };
 
 const updateProduct = async (id, data) => {
-  // Disallow direct stock edits through this method — use updateStock instead
   delete data.stock;
 
   const product = await Product.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
   });
-  if (!product) throw createError('Không tìm thấy sản phẩm', 404);
+  if (!product) throw createError('Product not found', 404);
   return product;
 };
 
@@ -73,11 +72,10 @@ const updateStock = async (id, adjustment) => {
       { $inc: { stock: adjustment } },
       { new: true, runValidators: true }
     );
-    if (!product) throw createError('Không tìm thấy sản phẩm', 404);
+    if (!product) throw createError('Product not found', 404);
     return product;
   }
 
-  // For exports, only proceed if current stock covers the requested amount
   const product = await Product.findOneAndUpdate(
     { _id: id, stock: { $gte: -adjustment } },
     { $inc: { stock: adjustment } },
@@ -86,8 +84,8 @@ const updateStock = async (id, adjustment) => {
 
   if (!product) {
     const exists = await Product.findById(id);
-    if (!exists) throw createError('Không tìm thấy sản phẩm', 404);
-    throw createError('Tồn kho không đủ để xuất', 400);
+    if (!exists) throw createError('Product not found', 404);
+    throw createError('Insufficient stock for this dispatch', 400);
   }
 
   return product;
@@ -95,7 +93,7 @@ const updateStock = async (id, adjustment) => {
 
 const deleteProduct = async (id) => {
   const product = await Product.findByIdAndDelete(id);
-  if (!product) throw createError('Không tìm thấy sản phẩm', 404);
+  if (!product) throw createError('Product not found', 404);
   return product;
 };
 
