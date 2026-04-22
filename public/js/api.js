@@ -156,3 +156,10 @@ function renderUser() {
   document.querySelectorAll('.user-name').forEach(el => el.textContent = user.name || '');
   document.querySelectorAll('.user-role').forEach(el => el.textContent = user.role || '');
 }
+function formatCurrency(amount, currency = 'USD') {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+  }).format(amount || 0);
+}
