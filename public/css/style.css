@@ -2,10 +2,10 @@
 
 /* ─── Variables ──────────────────────────────────────────────────────────────── */
 :root {
-  --primary:      #4f46e5;
-  --primary-dk:   #4338ca;
-  --primary-lt:   #eef2ff;
-  --sidebar-bg:   #0f172a;
+  --primary:      #ec4899;
+  --primary-dk:   #db2777;
+  --primary-lt:   #fdf2f8;
+  --sidebar-bg:   #0d0d0d;
   --sidebar-w:    248px;
   --bg:           #f8fafc;
   --surface:      #ffffff;
@@ -61,7 +61,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
   width: 36px; height: 36px; border-radius: 10px;
   background: var(--primary);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  box-shadow: 0 2px 8px rgb(79 70 229/.4);
+  box-shadow: 0 2px 8px rgb(236 72 153/.4);
 }
 .brand-icon svg { width: 20px; height: 20px; color: #fff; }
 .brand-name { font-size: 15px; font-weight: 700; color: #f8fafc; letter-spacing: -.3px; }
@@ -82,12 +82,12 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
 }
 .nav-link:hover { background: rgba(255,255,255,.06); color: #cbd5e1; }
 .nav-link.active {
-  background: rgba(99,102,241,.15); color: #c7d2fe;
+  background: rgba(236,72,153,.15); color: #fbcfe8;
 }
 .nav-link.active::before {
   content: ''; position: absolute;
   left: 0; top: 22%; bottom: 22%;
-  width: 3px; background: #818cf8; border-radius: 0 3px 3px 0;
+  width: 3px; background: #ec4899; border-radius: 0 3px 3px 0;
 }
 .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
 
@@ -193,8 +193,8 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
 }
 .btn:disabled { opacity: .5; pointer-events: none; }
 .btn:active   { transform: translateY(1px); }
-.btn-primary  { background: var(--primary); color: #fff; box-shadow: 0 1px 2px rgb(79 70 229/.25); }
-.btn-primary:hover  { background: var(--primary-dk); box-shadow: 0 2px 6px rgb(79 70 229/.35); }
+.btn-primary  { background: var(--primary); color: #fff; box-shadow: 0 1px 2px rgb(236 72 153/.25); }
+.btn-primary:hover  { background: var(--primary-dk); box-shadow: 0 2px 6px rgb(236 72 153/.35); }
 .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
 .btn-secondary:hover { background: #f8fafc; border-color: #cbd5e1; }
 .btn-danger   { background: var(--danger); color: #fff; box-shadow: 0 1px 2px rgb(239 68 68/.25); }
