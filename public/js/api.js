@@ -1,9 +1,7 @@
 const BASE_URL = 'https://wms-server-production-dc2a.up.railway.app';
 const API_BASE = `${BASE_URL}/api`;
 
-// Set to false to re-enable authentication
-const DEMO_MODE = true;
-const DEMO_USER = { name: 'Demo Admin', email: 'demo@wms.local', role: 'admin', _id: 'demo' };
+const DEMO_MODE = false; // ← FIXED: was true, causing silent 401 failures
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 
@@ -16,15 +14,10 @@ function getUser() {
 function setUser(u) { localStorage.setItem('user', JSON.stringify(u)); }
 
 function requireAuth() {
-  if (DEMO_MODE) {
-    if (!getUser()) setUser(DEMO_USER);
-    return;
-  }
   if (!getToken()) { window.location.href = '/login.html'; }
 }
 
 async function logout() {
-  if (DEMO_MODE) { window.location.reload(); return; }
   try {
     await request('POST', '/auth/logout');
   } catch (_) { /* ignore — clear local state regardless */ }
@@ -32,9 +25,27 @@ async function logout() {
   window.location.href = '/login.html';
 }
 
+// ─── Token refresh ────────────────────────────────────────────────────────────
+
+async function tryRefresh() {
+  try {
+    const res = await fetch(`${API_BASE}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include', // sends httpOnly refreshToken cookie
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    setToken(data.accessToken);
+    if (data.user) setUser(data.user);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // ─── Core fetch wrapper ───────────────────────────────────────────────────────
 
-async function request(method, path, body = null) {
+async function request(method, path, body = null, _retry = true) {
   const headers = { 'Content-Type': 'application/json' };
   const token = getToken();
   if (token) headers['Authorization'] = `Bearer ${token}`;
@@ -46,11 +57,19 @@ async function request(method, path, body = null) {
     body: body ? JSON.stringify(body) : null,
   });
 
+  // Auto-refresh expired access token (one retry)
+  if (res.status === 401 && _retry) {
+    const refreshed = await tryRefresh();
+    if (refreshed) return request(method, path, body, false);
+    clearToken();
+    window.location.href = '/login.html';
+    return;
+  }
+
+  // Non-retried 401 or other auth failures
   if (res.status === 401) {
-    if (!DEMO_MODE) {
-      clearToken();
-      window.location.href = '/login.html';
-    }
+    clearToken();
+    window.location.href = '/login.html';
     return;
   }
 
@@ -92,16 +111,13 @@ const Orders = {
   list: (params = {}) => request('GET', '/orders?' + new URLSearchParams(params)),
   get: (id) => request('GET', `/orders/${id}`),
   create: (body) => request('POST', '/orders', body),
-  updateStatus: (id, status, note = '') => request('PATCH', `/orders/${id}/status`, { status, note }),
-  packingQueue: () => request('GET', '/orders/packing'),
+  updateStatus: (id, status, note) => request('PATCH', `/orders/${id}/status`, { status, note }),
+  getPackingQueue: () => request('GET', '/orders/packing'),
   claim: (id) => request('PATCH', `/orders/${id}/claim`),
 };
 
-// ─── UI Utilities ─────────────────────────────────────────────────────────────
+// ─── Utilities ────────────────────────────────────────────────────────────────
 
-// Escapes user-controlled strings before inserting into innerHTML.
-// Without this, a product named "<img onerror=...>" executes arbitrary JS
-// in every warehouse worker's browser (stored XSS).
 function escapeHtml(str) {
   if (str == null) return '';
   return String(str)
@@ -112,55 +128,31 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function toast(message, type = 'success') {
+function toast(msg, type = 'success') {
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
-  el.textContent = message;
+  el.textContent = msg;
   document.body.appendChild(el);
-  requestAnimationFrame(() => el.classList.add('show'));
-  setTimeout(() => {
-    el.classList.remove('show');
-    setTimeout(() => el.remove(), 300);
-  }, 3000);
+  setTimeout(() => el.classList.add('show'), 10);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
 }
 
-function showModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('modal')) e.target.classList.remove('open');
-});
-
-function statusBadge(status) {
-  const map = {
-    pending: ['badge-yellow', 'Pending'],
-    packed:  ['badge-blue',   'Packed'],
-    shipped: ['badge-green',  'Shipped'],
-  };
-  const [cls, label] = map[status] || ['badge-grey', status];
-  return `<span class="badge ${cls}">${label}</span>`;
-}
-
-const VND_TO_USD = 1 / 25000;
-
-function formatCurrency(n) {
-  const usd = (Number(n) || 0) * VND_TO_USD;
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usd);
-}
-
-function formatDate(d) {
-  return new Date(d).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
-}
+function showModal(id) { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
 
 function markActiveNav() {
-  const page = location.pathname.split('/').pop();
-  document.querySelectorAll('.nav-link').forEach((a) => {
-    a.classList.toggle('active', a.getAttribute('href') === page);
+  const path = window.location.pathname.split('/').pop() || 'dashboard.html';
+  document.querySelectorAll('.nav-link').forEach(a => {
+    const href = a.getAttribute('href')?.split('/').pop();
+    if (href === path) a.classList.add('active');
   });
 }
 
 function renderUser() {
-  const u = getUser();
-  const el = document.getElementById('user-name');
-  if (el && u) el.textContent = u.name;
+  const user = getUser();
+  if (!user) return;
+  const initials = (user.name || '?')[0].toUpperCase();
+  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = user.name || '');
+  document.querySelectorAll('.user-role').forEach(el => el.textContent = user.role || '');
 }

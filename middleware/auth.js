@@ -1,12 +1,11 @@
 const { verifyAccessToken } = require('../config/tokens');
 
-const DEMO_USER = { id: 'demo', email: 'demo@wms.local', role: 'admin' };
+// DEMO_MODE bypass removed — all requests must carry a valid JWT.
+// Previously, DEMO_MODE injected { id: 'demo' } which is not a valid MongoDB
+// ObjectId, causing Product.create({ createdBy: 'demo' }) to throw a
+// CastError silently swallowed by the frontend's demo-mode 401 handler.
 
 const verifyToken = (req, res, next) => {
-  if (process.env.DEMO_MODE === 'true') {
-    req.user = DEMO_USER;
-    return next();
-  }
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
