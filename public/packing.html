@@ -6,42 +6,93 @@
   <title>Đóng gói — WMS</title>
   <link rel="stylesheet" href="./css/style.css" />
   <style>
-    /* Auto-refresh indicator */
     .refresh-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+      width: 7px; height: 7px; border-radius: 50%; background: var(--success);
       display: inline-block; margin-right: 6px; animation: pulse 2s infinite;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; } 50% { opacity: .3; }
-    }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
   </style>
 </head>
 <body>
 <div class="layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
   <aside class="sidebar">
-    <div class="sidebar-logo"><h1>📦 WMS</h1><span>Quản lý kho hàng</span></div>
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">WMS</div>
+        <div class="brand-sub">Quản lý kho hàng</div>
+      </div>
+    </div>
+
     <nav class="sidebar-nav">
-      <div class="nav-section">Menu</div>
-      <a class="nav-link" href="/dashboard.html"><span class="nav-icon">🏠</span> Tổng quan</a>
-      <a class="nav-link" href="/inventory.html"><span class="nav-icon">📦</span> Kho hàng</a>
-      <a class="nav-link" href="/orders.html"><span class="nav-icon">📋</span> Đơn hàng</a>
-      <a class="nav-link" href="/packing.html"><span class="nav-icon">🔖</span> Đóng gói</a>
+      <span class="nav-label">Điều hướng</span>
+
+      <a class="nav-link" href="/dashboard.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+        </svg>
+        <span>Tổng quan</span>
+      </a>
+
+      <a class="nav-link" href="/inventory.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+        <span>Kho hàng</span>
+      </a>
+
+      <a class="nav-link" href="/orders.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+        </svg>
+        <span>Đơn hàng</span>
+      </a>
+
+      <a class="nav-link" href="/packing.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+        </svg>
+        <span>Đóng gói</span>
+      </a>
     </nav>
+
     <div class="sidebar-footer">
-      <button class="btn-logout" onclick="logout()">
-        <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
-      </button>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="user-name">...</div>
+        </div>
+        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </aside>
 
+  <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
       <div class="topbar-title">Đóng gói</div>
       <div class="topbar-user">
-        <span style="font-size:13px;color:var(--text-muted)">
+        <span style="font-size:12.5px;color:var(--text-muted)">
           <span class="refresh-dot"></span>Tự động làm mới
         </span>
-        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="user-avatar" id="topbar-avatar">?</div>
       </div>
     </header>
 
@@ -52,29 +103,49 @@
           <div class="page-subtitle">Nhận đơn → Đóng gói → Bàn giao vận chuyển</div>
         </div>
         <div class="gap-row">
-          <!-- Filter tabs -->
           <div id="filter-tabs" class="gap-row">
-            <button class="btn btn-primary btn-sm active-tab" onclick="setFilter('all', this)">Tất cả</button>
-            <button class="btn btn-secondary btn-sm" onclick="setFilter('pending', this)">⏳ Chờ</button>
-            <button class="btn btn-secondary btn-sm" onclick="setFilter('packed', this)">📫 Đã gói</button>
+            <button class="btn btn-primary btn-sm" onclick="setFilter('all', this)">Tất cả</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('pending', this)">Chờ xử lý</button>
+            <button class="btn btn-secondary btn-sm" onclick="setFilter('packed', this)">Đã gói</button>
           </div>
           <button class="btn btn-secondary btn-sm" onclick="loadQueue()">↻ Làm mới</button>
         </div>
       </div>
 
       <!-- Summary bar -->
-      <div class="gap-row" style="margin-bottom:16px" id="summary-bar">
-        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
-          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Chờ đóng gói</div>
-          <div style="font-size:22px;font-weight:700;color:var(--warning)" id="count-pending">—</div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px" id="summary-bar">
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Chờ đóng gói</div>
+            <div class="stat-value" style="color:var(--warning)" id="count-pending">—</div>
+          </div>
         </div>
-        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
-          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Của tôi</div>
-          <div style="font-size:22px;font-weight:700;color:var(--primary)" id="count-mine">—</div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Đơn của tôi</div>
+            <div class="stat-value" style="color:var(--primary)" id="count-mine">—</div>
+          </div>
         </div>
-        <div class="card" style="padding:12px 20px;flex:1;text-align:center">
-          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Đã gói xong</div>
-          <div style="font-size:22px;font-weight:700;color:var(--success)" id="count-packed">—</div>
+        <div class="stat-card">
+          <div class="stat-icon-wrap stat-icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Đã gói xong</div>
+            <div class="stat-value" style="color:var(--success)" id="count-packed">—</div>
+          </div>
         </div>
       </div>
 
@@ -89,7 +160,7 @@
 <div class="modal" id="modal-pack">
   <div class="modal-box" style="max-width:480px">
     <div class="modal-header">
-      <div class="modal-title">✅ Xác nhận đóng gói</div>
+      <div class="modal-title">Xác nhận đóng gói</div>
       <button class="modal-close" onclick="closeModal('modal-pack')">✕</button>
     </div>
     <div class="modal-body">
@@ -116,14 +187,16 @@
   renderUser();
 
   const currentUser = getUser();
-  if (currentUser) document.getElementById('user-avatar').textContent = currentUser.name[0].toUpperCase();
+  if (currentUser) {
+    const initials = currentUser.name[0].toUpperCase();
+    document.getElementById('user-avatar').textContent   = initials;
+    document.getElementById('topbar-avatar').textContent = initials;
+  }
 
   const h = escapeHtml;
-  let allOrders = [];
+  let allOrders    = [];
   let activeFilter = 'all';
   let packingOrderId = null;
-  // Keyed by order._id — lets onclick pass only the ID instead of embedding
-  // raw JSON (which was an XSS vector via product names in the attribute string)
   const orderCache = new Map();
 
   function setFilter(filter, btn) {
@@ -170,7 +243,6 @@
         </div>`;
       return;
     }
-
     container.innerHTML = `<div class="packing-grid">${orders.map(renderCard).join('')}</div>`;
   }
 
@@ -182,7 +254,7 @@
     const itemsList = o.items.map(i =>
       `<div class="order-item-row">
         <span>${h(i.name)}</span>
-        <span class="fw-600">x${i.quantity} ${h(i.unit || '')}</span>
+        <span class="fw-600">x${i.quantity}</span>
       </div>`
     ).join('');
 
@@ -190,13 +262,9 @@
     const printBtn = `<button class="btn btn-secondary btn-sm" onclick="printLabel('${o._id}')">🖨️ In nhãn</button>`;
 
     if (o.status === 'pending') {
-      if (isUnassigned) {
-        actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>${printBtn}`;
-      } else if (isAssignedToMe) {
-        actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>${printBtn}`;
-      } else {
-        actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>${printBtn}`;
-      }
+      if (isUnassigned)      actions = `<button class="btn btn-primary btn-sm" onclick="claimOrder('${o._id}')">Nhận đơn</button>${printBtn}`;
+      else if (isAssignedToMe) actions = `<button class="btn btn-success btn-sm" onclick="openPackModal('${o._id}')">✅ Đóng gói xong</button>${printBtn}`;
+      else                   actions = `<span class="text-muted" style="font-size:12px">Đang được: ${h(o.assignedPacker?.name)}</span>${printBtn}`;
     } else if (o.status === 'packed') {
       actions = `${printBtn}<span class="badge badge-blue">Chờ vận chuyển</span>`;
     }
@@ -211,13 +279,13 @@
           ${statusBadge(o.status)}
         </div>
 
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">
           📍 ${h(o.customer?.address)}
         </div>
 
         <div class="order-items">${itemsList}</div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-top:10px">
           <span class="text-muted">${formatDate(o.createdAt)}</span>
           <span class="fw-600">${formatCurrency(o.totalAmount)}</span>
         </div>
@@ -247,15 +315,14 @@
     const o = orderCache.get(id);
     if (!o) return;
     packingOrderId = id;
-    document.getElementById('pack-order-num').textContent = o.orderNumber; // textContent = safe
+    document.getElementById('pack-order-num').textContent = o.orderNumber;
     document.getElementById('pack-note').value = '';
 
-    // Checklist lets packer verify each item before confirming
     document.getElementById('pack-checklist').innerHTML = o.items.map((item, i) => `
-      <label style="display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);
-        border-radius:6px;margin-bottom:6px;cursor:pointer">
-        <input type="checkbox" id="check-${i}" style="width:16px;height:16px" />
-        <span><strong>${h(item.name)}</strong> — x${item.quantity} ${h(item.unit || '')}</span>
+      <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);
+        border-radius:var(--radius);margin-bottom:6px;cursor:pointer;transition:background var(--t)">
+        <input type="checkbox" id="check-${i}" style="width:15px;height:15px;accent-color:var(--primary)" />
+        <span><strong>${h(item.name)}</strong> — x${item.quantity}</span>
       </label>
     `).join('');
 
@@ -263,12 +330,9 @@
   }
 
   async function confirmPack() {
-    // Verify all checklist items are ticked
     const checks = document.querySelectorAll('#pack-checklist input[type="checkbox"]');
-    const allChecked = [...checks].every(c => c.checked);
-    if (!allChecked) {
-      toast('Vui lòng kiểm tra tất cả sản phẩm trước khi xác nhận', 'error');
-      return;
+    if (![...checks].every(c => c.checked)) {
+      toast('Vui lòng kiểm tra tất cả sản phẩm trước khi xác nhận', 'error'); return;
     }
 
     const note = document.getElementById('pack-note').value.trim();
@@ -296,19 +360,14 @@
     const escHtml = s => String(s ?? '')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    // Format as Vietnamese style: 1.000.000đ
     const fmtVND = n => new Intl.NumberFormat('vi-VN').format(n ?? 0) + 'đ';
 
     const itemRows = o.items.map(i => {
       const subtotal = i.subtotal ?? (i.price * i.quantity);
       return `<tr>
-        <td style="padding:4px 0;border-bottom:1px dashed #e2e8f0">${escHtml(i.name)}</td>
-        <td style="padding:4px 6px;text-align:center;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
-          x${i.quantity}
-        </td>
-        <td style="padding:4px 0;text-align:right;border-bottom:1px dashed #e2e8f0;white-space:nowrap">
-          ${fmtVND(subtotal)}
-        </td>
+        <td style="padding:5px 0;border-bottom:1px dashed #e2e8f0">${escHtml(i.name)}</td>
+        <td style="padding:5px 6px;text-align:center;border-bottom:1px dashed #e2e8f0;white-space:nowrap">x${i.quantity}</td>
+        <td style="padding:5px 0;text-align:right;border-bottom:1px dashed #e2e8f0;white-space:nowrap">${fmtVND(subtotal)}</td>
       </tr>`;
     }).join('');
 
@@ -318,24 +377,22 @@
   <meta charset="UTF-8"/>
   <title>Nhãn ${escHtml(o.orderNumber)}</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #0f172a;
-           width: 10cm; padding: 12px; }
-    .label-header { display: flex; justify-content: space-between;
-                    align-items: center; margin-bottom: 10px; }
-    .order-num { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
-    .brand { font-size: 11px; color: #64748b; }
-    hr { border: none; border-top: 2px solid #0f172a; margin: 8px 0; }
-    .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase;
-                     letter-spacing: 1px; color: #64748b; margin-bottom: 4px; }
-    .customer-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
-    .customer-phone { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-    .customer-addr { font-size: 12px; color: #334155; line-height: 1.4; }
-    table { width: 100%; border-collapse: collapse; margin-top: 6px; }
-    .total-row td { padding-top: 6px; font-weight: 700; border-top: 2px solid #0f172a; }
-    .footer { margin-top: 10px; font-size: 10px; color: #94a3b8;
-              text-align: center; border-top: 1px solid #e2e8f0; padding-top: 6px; }
-    @media print { @page { margin: 0; size: 10cm auto; } }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Segoe UI',sans-serif; font-size:13px; color:#0f172a; width:10cm; padding:14px; }
+    .label-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .order-num { font-size:20px; font-weight:800; letter-spacing:1px; }
+    .brand { font-size:11px; color:#64748b; }
+    hr { border:none; border-top:2px solid #0f172a; margin:8px 0; }
+    .section-title { font-size:10px; font-weight:700; text-transform:uppercase;
+                     letter-spacing:1px; color:#64748b; margin-bottom:5px; }
+    .customer-name  { font-size:16px; font-weight:700; margin-bottom:3px; }
+    .customer-phone { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .customer-addr  { font-size:12px; color:#334155; line-height:1.4; }
+    table { width:100%; border-collapse:collapse; margin-top:6px; }
+    .total-row td { padding-top:7px; font-weight:700; border-top:2px solid #0f172a; }
+    .footer { margin-top:10px; font-size:10px; color:#94a3b8;
+              text-align:center; border-top:1px solid #e2e8f0; padding-top:6px; }
+    @media print { @page { margin:0; size:10cm auto; } }
   </style>
 </head>
 <body>
@@ -364,13 +421,12 @@
 </body>
 </html>`;
 
-    const win = window.open('', '_blank', 'width=440,height=620');
+    const win = window.open('', '_blank', 'width=440,height=660');
     if (!win) { toast('Trình duyệt đang chặn popup — cho phép popup để in nhãn', 'error'); return; }
     win.document.write(html);
     win.document.close();
   }
 
-  // Auto-refresh every 30 seconds to pick up new orders
   loadQueue();
   setInterval(loadQueue, 30_000);
 </script>

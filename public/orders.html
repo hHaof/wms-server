@@ -9,26 +9,82 @@
 </head>
 <body>
 <div class="layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
   <aside class="sidebar">
-    <div class="sidebar-logo"><h1>📦 WMS</h1><span>Quản lý kho hàng</span></div>
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">WMS</div>
+        <div class="brand-sub">Quản lý kho hàng</div>
+      </div>
+    </div>
+
     <nav class="sidebar-nav">
-      <div class="nav-section">Menu</div>
-      <a class="nav-link" href="/dashboard.html"><span class="nav-icon">🏠</span> Tổng quan</a>
-      <a class="nav-link" href="/inventory.html"><span class="nav-icon">📦</span> Kho hàng</a>
-      <a class="nav-link" href="/orders.html"><span class="nav-icon">📋</span> Đơn hàng</a>
-      <a class="nav-link" href="/packing.html"><span class="nav-icon">🔖</span> Đóng gói</a>
+      <span class="nav-label">Điều hướng</span>
+
+      <a class="nav-link" href="/dashboard.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+        </svg>
+        <span>Tổng quan</span>
+      </a>
+
+      <a class="nav-link" href="/inventory.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+        <span>Kho hàng</span>
+      </a>
+
+      <a class="nav-link" href="/orders.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+        </svg>
+        <span>Đơn hàng</span>
+      </a>
+
+      <a class="nav-link" href="/packing.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+        </svg>
+        <span>Đóng gói</span>
+      </a>
     </nav>
+
     <div class="sidebar-footer">
-      <button class="btn-logout" onclick="logout()">
-        <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
-      </button>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="user-name">...</div>
+        </div>
+        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </aside>
 
+  <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
       <div class="topbar-title">Đơn hàng</div>
-      <div class="topbar-user"><div class="user-avatar" id="user-avatar">?</div></div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="topbar-avatar">?</div>
+      </div>
     </header>
 
     <main class="content">
@@ -38,21 +94,21 @@
           <div class="page-subtitle">Quản lý và theo dõi trạng thái đơn hàng</div>
         </div>
         <div class="gap-row">
-          <button class="btn btn-secondary" id="btn-export" onclick="exportExcel()">📊 Xuất Excel</button>
+          <button class="btn btn-secondary" id="btn-export" onclick="exportExcel()">Xuất Excel</button>
           <button class="btn btn-primary" onclick="showModal('modal-create')">+ Tạo đơn</button>
         </div>
       </div>
 
       <div class="card">
         <div class="toolbar">
-          <input class="form-control toolbar-search" id="search-input" placeholder="Tìm mã đơn hàng..." />
+          <input class="form-control toolbar-search" id="search-input" placeholder="Tìm mã đơn hàng, tên khách..." />
           <select class="form-control" id="status-filter" style="width:160px" onchange="loadOrders(1)">
             <option value="">Tất cả trạng thái</option>
             <option value="pending">Chờ đóng gói</option>
             <option value="packed">Đã đóng gói</option>
             <option value="shipped">Đã giao</option>
           </select>
-          <button class="btn btn-secondary" onclick="loadOrders(1)">🔍 Lọc</button>
+          <button class="btn btn-secondary" onclick="loadOrders(1)">Lọc</button>
         </div>
 
         <div class="table-wrap">
@@ -87,7 +143,7 @@
       <button class="modal-close" onclick="closeModal('modal-create')">✕</button>
     </div>
     <div class="modal-body">
-      <p class="fw-600" style="margin-bottom:10px">Thông tin khách hàng</p>
+      <p class="fw-600" style="margin-bottom:12px">Thông tin khách hàng</p>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Tên khách hàng *</label>
@@ -103,7 +159,7 @@
         <input class="form-control" id="c-address" required placeholder="123 Đường ABC, Quận 1, TP.HCM" />
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px">
         <p class="fw-600">Sản phẩm</p>
         <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()">+ Thêm dòng</button>
       </div>
@@ -169,7 +225,11 @@
   renderUser();
 
   const user = getUser();
-  if (user) document.getElementById('user-avatar').textContent = user.name[0].toUpperCase();
+  if (user) {
+    const initials = user.name[0].toUpperCase();
+    document.getElementById('user-avatar').textContent   = initials;
+    document.getElementById('topbar-avatar').textContent = initials;
+  }
 
   const h = escapeHtml;
   let currentPage = 1;
@@ -216,15 +276,15 @@
     orders.forEach(o => orderCache.set(o._id, o));
     tbody.innerHTML = orders.map(o => `
       <tr>
-        <td class="fw-600">${h(o.orderNumber)}</td>
+        <td class="fw-600" style="font-family:monospace;font-size:12.5px">${h(o.orderNumber)}</td>
         <td>
-          <div>${h(o.customer.name)}</div>
+          <div class="fw-600">${h(o.customer.name)}</div>
           <div class="text-muted" style="font-size:12px">${h(o.customer.phone)}</div>
         </td>
-        <td class="text-muted" style="font-size:13px">${o.items.length} sản phẩm</td>
+        <td class="text-muted">${o.items.length} sản phẩm</td>
         <td class="fw-600">${formatCurrency(o.totalAmount)}</td>
         <td>${statusBadge(o.status)}</td>
-        <td class="text-muted">${formatDate(o.createdAt)}</td>
+        <td class="text-muted" style="font-size:12.5px">${formatDate(o.createdAt)}</td>
         <td class="text-right">
           <div class="gap-row" style="justify-content:flex-end">
             <button class="btn btn-secondary btn-xs" onclick="viewDetail('${o._id}')">Chi tiết</button>
@@ -284,8 +344,7 @@
     const note    = document.getElementById('order-note').value.trim();
 
     if (!name || !phone || !address) {
-      toast('Vui lòng điền đầy đủ thông tin khách hàng', 'error');
-      return;
+      toast('Vui lòng điền đầy đủ thông tin khách hàng', 'error'); return;
     }
 
     const items = [];
@@ -294,19 +353,17 @@
       if (!row) continue;
       const product  = row.querySelector('[data-field="product"]').value;
       const quantity = parseInt(row.querySelector('[data-field="quantity"]').value, 10);
-      if (!product) { toast('Vui lòng chọn sản phẩm cho tất cả dòng', 'error'); return; }
+      if (!product)  { toast('Vui lòng chọn sản phẩm cho tất cả dòng', 'error'); return; }
       if (!quantity || quantity < 1) { toast('Số lượng phải ít nhất là 1', 'error'); return; }
       items.push({ product, quantity });
     }
-
-    if (items.length === 0) { toast('Đơn hàng cần ít nhất 1 sản phẩm', 'error'); return; }
+    if (!items.length) { toast('Đơn hàng cần ít nhất 1 sản phẩm', 'error'); return; }
 
     const btn = document.getElementById('btn-create');
     btn.disabled = true; btn.textContent = 'Đang tạo...';
     try {
       await Orders.create({ customer: { name, phone, address }, items, note });
       toast('Tạo đơn hàng thành công');
-      // Reset form
       ['c-name','c-phone','c-address','order-note'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('items-container').innerHTML = '';
       itemRows = [];
@@ -325,7 +382,7 @@
     const o = orderCache.get(id);
     if (!o) return;
     selectedOrderId = id;
-    document.getElementById('status-order-num').textContent = o.orderNumber; // textContent = safe
+    document.getElementById('status-order-num').textContent = o.orderNumber;
     document.getElementById('status-note').value = '';
 
     const sel = document.getElementById('new-status');
@@ -357,19 +414,25 @@
       const { order: o } = await Orders.get(id);
       document.getElementById('detail-title').textContent = o.orderNumber;
       document.getElementById('detail-body').innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <div><div class="text-muted" style="font-size:12px">KHÁCH HÀNG</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+          <div>
+            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Khách hàng</div>
             <div class="fw-600">${h(o.customer.name)}</div>
-            <div>${h(o.customer.phone)}</div>
-            <div class="text-muted">${h(o.customer.address)}</div></div>
-          <div><div class="text-muted" style="font-size:12px">TRẠNG THÁI</div>
-            <div style="margin-top:4px">${statusBadge(o.status)}</div>
-            <div class="text-muted" style="font-size:12px;margin-top:4px">${formatDate(o.createdAt)}</div></div>
+            <div style="margin-top:2px">${h(o.customer.phone)}</div>
+            <div class="text-muted" style="font-size:13px;margin-top:2px">${h(o.customer.address)}</div>
+          </div>
+          <div>
+            <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Trạng thái</div>
+            <div>${statusBadge(o.status)}</div>
+            <div class="text-muted" style="font-size:12px;margin-top:6px">${formatDate(o.createdAt)}</div>
+          </div>
         </div>
         <table style="width:100%;margin-bottom:16px">
           <thead><tr>
-            <th>Sản phẩm</th><th>SKU</th><th class="text-right">SL</th>
-            <th class="text-right">Đơn giá</th><th class="text-right">Thành tiền</th>
+            <th>Sản phẩm</th><th>SKU</th>
+            <th class="text-right">SL</th>
+            <th class="text-right">Đơn giá</th>
+            <th class="text-right">Thành tiền</th>
           </tr></thead>
           <tbody>
             ${o.items.map(i => `<tr>
@@ -381,18 +444,18 @@
             </tr>`).join('')}
           </tbody>
           <tfoot><tr style="border-top:2px solid var(--border)">
-            <td colspan="4" class="text-right fw-600" style="padding:10px 14px">Tổng cộng</td>
-            <td class="text-right fw-600" style="padding:10px 14px;font-size:16px">${formatCurrency(o.totalAmount)}</td>
+            <td colspan="4" class="text-right fw-600" style="padding:10px 16px">Tổng cộng</td>
+            <td class="text-right fw-600" style="padding:10px 16px;font-size:15px">${formatCurrency(o.totalAmount)}</td>
           </tr></tfoot>
         </table>
-        ${o.note ? `<div class="text-muted" style="font-size:13px">📝 ${h(o.note)}</div>` : ''}
-        <div style="margin-top:12px">
-          <div class="text-muted" style="font-size:12px;margin-bottom:6px">LỊCH SỬ TRẠNG THÁI</div>
+        ${o.note ? `<div class="text-muted" style="font-size:13px;margin-bottom:12px">📝 ${h(o.note)}</div>` : ''}
+        <div>
+          <div class="text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Lịch sử trạng thái</div>
           ${o.statusHistory.map(entry => `
-            <div style="display:flex;gap:8px;font-size:13px;padding:4px 0">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0">
               ${statusBadge(entry.status)}
               <span class="text-muted">${formatDate(entry.createdAt)}</span>
-              ${entry.note ? `— ${h(entry.note)}` : ''}
+              ${entry.note ? `<span class="text-muted">— ${h(entry.note)}</span>` : ''}
             </div>
           `).join('')}
         </div>
@@ -402,7 +465,7 @@
     }
   }
 
-  document.getElementById('search-input').addEventListener('keydown', (e) => {
+  document.getElementById('search-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') loadOrders(1);
   });
 
@@ -410,11 +473,8 @@
 
   async function exportExcel() {
     const btn = document.getElementById('btn-export');
-    btn.disabled = true;
-    btn.textContent = 'Đang xuất...';
-
+    btn.disabled = true; btn.textContent = 'Đang xuất...';
     try {
-      // Fetch all orders matching current filters (paginate through all pages)
       const search = document.getElementById('search-input').value.trim();
       const status = document.getElementById('status-filter').value;
       const params = { limit: 100 };
@@ -430,22 +490,19 @@
       } while (page <= totalPages);
 
       const statusLabel = { pending: 'Chờ đóng gói', packed: 'Đã đóng gói', shipped: 'Đã giao' };
-
       const rows = all.map(o => ({
-        'Mã đơn':       o.orderNumber,
-        'Khách hàng':   o.customer.name,
-        'SĐT':          o.customer.phone,
-        'Địa chỉ':      o.customer.address,
-        'Sản phẩm':     o.items.map(i => `${i.name} x${i.quantity}`).join('; '),
-        'Tổng tiền':    o.totalAmount,
-        'Trạng thái':   statusLabel[o.status] || o.status,
-        'Ngày tạo':     new Date(o.createdAt).toLocaleString('vi-VN'),
+        'Mã đơn':     o.orderNumber,
+        'Khách hàng': o.customer.name,
+        'SĐT':        o.customer.phone,
+        'Địa chỉ':    o.customer.address,
+        'Sản phẩm':   o.items.map(i => `${i.name} x${i.quantity}`).join('; '),
+        'Tổng tiền':  o.totalAmount,
+        'Trạng thái': statusLabel[o.status] || o.status,
+        'Ngày tạo':   new Date(o.createdAt).toLocaleString('vi-VN'),
       }));
 
       const ws = XLSX.utils.json_to_sheet(rows);
-      // Auto column width
       ws['!cols'] = [16,20,14,40,60,14,16,18].map(w => ({ wch: w }));
-
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Đơn hàng');
       XLSX.writeFile(wb, `don-hang-${new Date().toISOString().slice(0,10)}.xlsx`);
@@ -453,8 +510,7 @@
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false;
-      btn.textContent = '📊 Xuất Excel';
+      btn.disabled = false; btn.textContent = 'Xuất Excel';
     }
   }
 

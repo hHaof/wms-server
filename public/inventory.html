@@ -8,26 +8,82 @@
 </head>
 <body>
 <div class="layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
   <aside class="sidebar">
-    <div class="sidebar-logo"><h1>📦 WMS</h1><span>Quản lý kho hàng</span></div>
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">WMS</div>
+        <div class="brand-sub">Quản lý kho hàng</div>
+      </div>
+    </div>
+
     <nav class="sidebar-nav">
-      <div class="nav-section">Menu</div>
-      <a class="nav-link" href="/dashboard.html"><span class="nav-icon">🏠</span> Tổng quan</a>
-      <a class="nav-link" href="/inventory.html"><span class="nav-icon">📦</span> Kho hàng</a>
-      <a class="nav-link" href="/orders.html"><span class="nav-icon">📋</span> Đơn hàng</a>
-      <a class="nav-link" href="/packing.html"><span class="nav-icon">🔖</span> Đóng gói</a>
+      <span class="nav-label">Điều hướng</span>
+
+      <a class="nav-link" href="/dashboard.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+        </svg>
+        <span>Tổng quan</span>
+      </a>
+
+      <a class="nav-link" href="/inventory.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+        <span>Kho hàng</span>
+      </a>
+
+      <a class="nav-link" href="/orders.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+        </svg>
+        <span>Đơn hàng</span>
+      </a>
+
+      <a class="nav-link" href="/packing.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+        </svg>
+        <span>Đóng gói</span>
+      </a>
     </nav>
+
     <div class="sidebar-footer">
-      <button class="btn-logout" onclick="logout()">
-        <span>🚪</span> Đăng xuất (<span id="user-name">...</span>)
-      </button>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="user-name">...</div>
+        </div>
+        <button class="sidebar-logout-btn" onclick="logout()" title="Đăng xuất">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </aside>
 
+  <!-- ── Main ─────────────────────────────────────────────────────────────────── -->
   <div class="main">
     <header class="topbar">
       <div class="topbar-title">Kho hàng</div>
-      <div class="topbar-user"><div class="user-avatar" id="user-avatar">?</div></div>
+      <div class="topbar-user">
+        <div class="user-avatar" id="topbar-avatar">?</div>
+      </div>
     </header>
 
     <main class="content">
@@ -65,7 +121,7 @@
             <option value="low">⚠️ Sắp hết hàng</option>
             <option value="out">❌ Hết hàng (0)</option>
           </select>
-          <button class="btn btn-secondary" onclick="loadProducts(1)">🔍 Lọc</button>
+          <button class="btn btn-secondary" onclick="loadProducts(1)">Lọc</button>
         </div>
 
         <div class="table-wrap">
@@ -179,13 +235,16 @@
   renderUser();
 
   const user = getUser();
-  if (user) document.getElementById('user-avatar').textContent = user.name[0].toUpperCase();
+  if (user) {
+    const initials = user.name[0].toUpperCase();
+    document.getElementById('user-avatar').textContent   = initials;
+    document.getElementById('topbar-avatar').textContent = initials;
+  }
 
   const h = escapeHtml;
   let currentPage = 1;
   let selectedProductId = null;
   const productCache = new Map();
-
   const UNIT_LABEL = { piece: 'cái', kg: 'kg', box: 'hộp', liter: 'lít', meter: 'mét' };
 
   async function loadProducts(page = 1) {
@@ -232,13 +291,13 @@
 
       return `
         <tr>
-          <td class="fw-600" style="font-family:monospace">${h(p.sku)}</td>
+          <td class="fw-600" style="font-family:monospace;font-size:12.5px">${h(p.sku)}</td>
           <td>
             <div class="fw-600">${h(p.name)}</div>
             ${p.description ? `<div class="text-muted" style="font-size:12px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h(p.description)}</div>` : ''}
           </td>
-          <td>${h(p.category)}</td>
-          <td>${formatCurrency(p.price)}</td>
+          <td><span class="badge badge-grey">${h(p.category)}</span></td>
+          <td class="fw-600">${formatCurrency(p.price)}</td>
           <td class="${isOut ? 'text-danger fw-600' : isLow ? 'stock-low' : ''}">
             ${p.stock} ${h(unitLabel)}
             ${stockBadge}
@@ -247,7 +306,7 @@
             ? '<span class="badge badge-green">Hoạt động</span>'
             : '<span class="badge badge-grey">Vô hiệu</span>'}</td>
           <td class="text-right" style="white-space:nowrap">
-            <button class="btn btn-secondary btn-xs" onclick="openStockModal('${p._id}')">Kho</button>
+            <button class="btn btn-secondary btn-xs" onclick="openStockModal('${p._id}')">Tồn kho</button>
             <button class="btn btn-danger btn-xs" onclick="deleteProduct('${p._id}')" style="margin-left:4px">Xóa</button>
           </td>
         </tr>
@@ -259,9 +318,8 @@
     const el = document.getElementById('pagination');
     if (totalPages <= 1) { el.innerHTML = ''; return; }
     let html = `<button class="page-btn" onclick="loadProducts(${page - 1})" ${page === 1 ? 'disabled' : ''}>‹</button>`;
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++)
       html += `<button class="page-btn ${i === page ? 'active' : ''}" onclick="loadProducts(${i})">${i}</button>`;
-    }
     html += `<button class="page-btn" onclick="loadProducts(${page + 1})" ${page === totalPages ? 'disabled' : ''}>›</button>`;
     el.innerHTML = html;
   }
@@ -279,14 +337,13 @@
 
   async function submitAdd(e) {
     e.preventDefault();
-    const btn = document.getElementById('btn-add');
+    const btn  = document.getElementById('btn-add');
     const form = e.target;
     const data = Object.fromEntries(new FormData(form));
     data.price = Number(data.price);
     data.stock = Number(data.stock);
 
-    btn.disabled = true;
-    btn.textContent = 'Đang lưu...';
+    btn.disabled = true; btn.textContent = 'Đang lưu...';
     try {
       await Products.create(data);
       toast('Đã thêm sản phẩm thành công');
@@ -296,8 +353,7 @@
     } catch (err) {
       toast(err.message, 'error');
     } finally {
-      btn.disabled = false;
-      btn.textContent = 'Thêm sản phẩm';
+      btn.disabled = false; btn.textContent = 'Thêm sản phẩm';
     }
   }
 
@@ -306,8 +362,8 @@
     if (!p) return;
     selectedProductId = id;
     document.getElementById('stock-product-name').textContent = p.name;
-    document.getElementById('stock-current').textContent = p.stock;
-    document.getElementById('stock-adjustment').value = '';
+    document.getElementById('stock-current').textContent      = p.stock;
+    document.getElementById('stock-adjustment').value         = '';
     showModal('modal-stock');
   }
 
@@ -345,7 +401,7 @@
     loadProducts(1);
   }
 
-  document.getElementById('search-input').addEventListener('keydown', (e) => {
+  document.getElementById('search-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') loadProducts(1);
   });
 
