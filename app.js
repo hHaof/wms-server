@@ -23,6 +23,7 @@ app.use(cors({
     'https://www.allfastllc.xyz',
     'http://allfastllc.xyz',
     'http://www.allfastllc.xyz',
+    'https://wms-server-kappa.vercel.app',
   ],
   credentials: true,
 }));
