@@ -217,8 +217,8 @@
         Orders.list({ limit: 200 }),
       ]);
 
-      const products = prodData.products || [];
-      const orders   = orderData.orders   || [];
+      const products = prodData?.products || [];
+      const orders   = orderData?.orders   || [];
 
       const lowStock = products.filter(p => p.stock > 0 && p.stock <= p.lowStockThreshold).length;
       const outStock = products.filter(p => p.stock === 0).length;
