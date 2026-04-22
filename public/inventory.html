@@ -349,7 +349,7 @@
       toast('Product added successfully');
       form.reset();
       closeModal('modal-add');
-      loadProducts(currentPage);
+      loadProducts(1);
     } catch (err) {
       toast(err.message, 'error');
     } finally {
