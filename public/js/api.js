@@ -141,8 +141,11 @@ function statusBadge(status) {
   return `<span class="badge ${cls}">${label}</span>`;
 }
 
+const VND_TO_USD = 1 / 25000;
+
 function formatCurrency(n) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(n);
+  const usd = (Number(n) || 0) * VND_TO_USD;
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usd);
 }
 
 function formatDate(d) {
