@@ -148,11 +148,8 @@ function statusBadge(status) {
   return `<span class="badge ${cls}">${label}</span>`;
 }
 
-const VND_TO_USD = 1 / 25000;
-
 function formatCurrency(n) {
-  const usd = (Number(n) || 0) * VND_TO_USD;
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(usd);
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(n) || 0);
 }
 
 function formatDate(d) {
