@@ -31,6 +31,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Giá không được để trống'],
       min: [0, 'Giá không được âm'],
+      set: (v) => Math.round(v * 100) / 100,
     },
     unit: {
       type: String,
